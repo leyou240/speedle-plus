@@ -17,6 +17,8 @@ jobs:
         path: src/github.com/teramoby/speedle-plus
     - uses: actions/setup-go@v2
       name: Setup Golang env
+      with:
+        go-version: 1.19.x
     - name: Build and test
       working-directory: src/github.com/teramoby/speedle-plus
       run: |
