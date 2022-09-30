@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/leyou240/speedle-plus/pkg/cmd/flags"
 	"github.com/spf13/cobra"
-	"github.com/teramoby/speedle-plus/pkg/cmd/flags"
 )
 
 const (

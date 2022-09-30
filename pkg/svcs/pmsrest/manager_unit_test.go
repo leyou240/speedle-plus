@@ -16,11 +16,11 @@ import (
 	"encoding/json"
 	"log"
 
-	pmsapi "github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/pkg/cfg"
-	"github.com/teramoby/speedle-plus/pkg/store"
-	_ "github.com/teramoby/speedle-plus/pkg/store/file"
-	"github.com/teramoby/speedle-plus/pkg/svcs"
+	pmsapi "github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/pkg/cfg"
+	"github.com/leyou240/speedle-plus/pkg/store"
+	_ "github.com/leyou240/speedle-plus/pkg/store/file"
+	"github.com/leyou240/speedle-plus/pkg/svcs"
 )
 
 var storeFile = "./fakestore.json"

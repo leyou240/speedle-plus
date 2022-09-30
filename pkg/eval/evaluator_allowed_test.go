@@ -6,7 +6,7 @@ package eval
 import (
 	"testing"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
 )
 
 func TestIsAllowedWithoutApp(t *testing.T) {
@@ -631,7 +631,7 @@ func TestIsAllowedMatch(t *testing.T) {
 	}
 }
 
-//and principal is not allowed in role policy
+// and principal is not allowed in role policy
 func ANDPrincpal_IN_RolePolicy_TestIsAllowedMatch_1(t *testing.T) {
 	const appStream = `
 	{
@@ -714,7 +714,7 @@ func ANDPrincpal_IN_RolePolicy_TestIsAllowedMatch_1(t *testing.T) {
 	}
 }
 
-//and principal is not allowed in role policy
+// and principal is not allowed in role policy
 func ANDPrincpal_IN_RolePolicy_TestIsAllowedMatch_2(t *testing.T) {
 	const appStream = `
 	{

@@ -15,11 +15,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/cmd/spctl/client"
-	"github.com/teramoby/speedle-plus/pkg/pdl"
-	"github.com/teramoby/speedle-plus/pkg/store"
-	"github.com/teramoby/speedle-plus/pkg/store/file"
+	"github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/cmd/spctl/client"
+	"github.com/leyou240/speedle-plus/pkg/pdl"
+	"github.com/leyou240/speedle-plus/pkg/store"
+	"github.com/leyou240/speedle-plus/pkg/store/file"
 )
 
 var (

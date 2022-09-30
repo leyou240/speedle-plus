@@ -10,13 +10,13 @@ import (
 	"strings"
 	"time"
 
+	"github.com/leyou240/speedle-plus/3rdparty/github.com/Knetic/govaluate"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/pkg/errors"
+	"github.com/leyou240/speedle-plus/pkg/eval/function"
+	"github.com/leyou240/speedle-plus/pkg/subjectutils"
 	log "github.com/sirupsen/logrus"
-	"github.com/teramoby/speedle-plus/3rdparty/github.com/Knetic/govaluate"
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/pkg/errors"
-	"github.com/teramoby/speedle-plus/pkg/eval/function"
-	"github.com/teramoby/speedle-plus/pkg/subjectutils"
 )
 
 var builtinFunctions = map[string]govaluate.ExpressionFunction{

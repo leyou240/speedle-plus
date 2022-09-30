@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/pkg/errors"
+	"github.com/leyou240/speedle-plus/pkg/suid"
 	log "github.com/sirupsen/logrus"
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/pkg/errors"
-	"github.com/teramoby/speedle-plus/pkg/suid"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/concurrency"
 	"go.etcd.io/etcd/server/v3/embed"

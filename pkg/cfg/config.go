@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 	"os"
 
-	"github.com/teramoby/speedle-plus/pkg/assertion"
-	"github.com/teramoby/speedle-plus/pkg/errors"
-	"github.com/teramoby/speedle-plus/pkg/logging"
+	"github.com/leyou240/speedle-plus/pkg/assertion"
+	"github.com/leyou240/speedle-plus/pkg/errors"
+	"github.com/leyou240/speedle-plus/pkg/logging"
 )
 
 const (

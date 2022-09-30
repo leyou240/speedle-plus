@@ -6,8 +6,8 @@ package adsrest
 import (
 	"net/http"
 
-	"github.com/teramoby/speedle-plus/pkg/httputils"
-	"github.com/teramoby/speedle-plus/pkg/logging"
+	"github.com/leyou240/speedle-plus/pkg/httputils"
+	"github.com/leyou240/speedle-plus/pkg/logging"
 )
 
 func (e *RESTService) Discover(w http.ResponseWriter, r *http.Request) {

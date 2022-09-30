@@ -1,16 +1,17 @@
 //Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
 //Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 
-//+build runtime_test
+//go:build runtime_test
+// +build runtime_test
 
 package adsrest
 
 import (
 	"testing"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/testutil"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/testutil"
 )
 
 var URI_GRANTED_PERMS = "/authz-check/v1/all-granted-permissions"
@@ -63,7 +64,7 @@ func TestMats_GrantPerms_Simple(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-complex"
+// Policies are defined in check_prepare_test.go : "service-complex"
 func TestLrg_GrantedPerms_Complex_bug214(t *testing.T) {
 	data := &[]testutil.TestCase{
 
@@ -149,7 +150,7 @@ func TestLrg_GrantedPerms_Complex_bug214(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-complex-role
+// Policies are defined in check_prepare_test.go : "service-complex-role
 func TestLrg_GrantedPerms_ComplexRole_bug214(t *testing.T) {
 	data := &[]testutil.TestCase{
 		{
@@ -245,8 +246,8 @@ func TestLrg_GrantedPerms_ComplexRole_bug214(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-with-resexpr"
-//Bug#123: Due to limitation of implementation, Can't get grantedpms.Permissions if policy is with resourceexpression
+// Policies are defined in check_prepare_test.go : "service-with-resexpr"
+// Bug#123: Due to limitation of implementation, Can't get grantedpms.Permissions if policy is with resourceexpression
 func testLrg_GrantedPerms_ResExpr(t *testing.T) {
 	data := &[]testutil.TestCase{
 		{

@@ -1,25 +1,28 @@
 //Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
 //Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-//+build runtime_cache_test
+//go:build runtime_cache_test
+// +build runtime_cache_test
 
 package adsrest
 
 import (
 	"testing"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/testutil"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/testutil"
 
-	"github.com/teramoby/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/api/pms"
 )
 
 var POLICY_RELOAD_TIME = 500 //ms
-/**
+/*
+*
 Allowed result changed due to deny policy added/removed
-  test1:Policy1 exist, allow=true;
-  test2:Policy2 Added, allowed=false
-  test3:Policy2 removed, allow=true
-  test4:Policy1 removed, allow=false
+
+	test1:Policy1 exist, allow=true;
+	test2:Policy2 Added, allowed=false
+	test3:Policy2 removed, allow=true
+	test4:Policy1 removed, allow=false
 */
 func TestMats_Cache_With_Policy_Added(t *testing.T) {
 	appName := "TestCacheWithPolicyAdded"
@@ -206,11 +209,13 @@ func TestMats_Cache_With_Policy_Added(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-/**
+/*
+*
 "Allowed" result changed due to policy Condition changed
-  test1:Policy1 exist, allow=true;
-  test2:Policy1 Removed, and create Policy1 again with Condition changed. allowed=false
-  test3:Policy1 removed, allow=false
+
+	test1:Policy1 exist, allow=true;
+	test2:Policy1 Removed, and create Policy1 again with Condition changed. allowed=false
+	test3:Policy1 removed, allow=false
 */
 func TestMats_Cache_With_Policy_Condition_Changed(t *testing.T) {
 	appName := "TestCacheWithPolicyConditionChanged"
@@ -381,7 +386,8 @@ func TestMats_Cache_With_Policy_Condition_Changed(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-/**
+/*
+*
 "Allowed" result changed due to policy Principle changed
 */
 func TestMats_Cache_With_Policy_Subject_Changed(t *testing.T) {
@@ -542,7 +548,8 @@ func TestMats_Cache_With_Policy_Subject_Changed(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-/**
+/*
+*
 "Allowed" result changed due to policy Permission resource changed
 */
 func TestMats_Cache_With_Policy_Permission_Res_Changed(t *testing.T) {
@@ -703,7 +710,8 @@ func TestMats_Cache_With_Policy_Permission_Res_Changed(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-/**
+/*
+*
 "Allowed" result changed due to policy Permission Actions changed
 */
 func TestMats_Cache_With_Policy_Permission_Action_Changed(t *testing.T) {
@@ -864,13 +872,15 @@ func TestMats_Cache_With_Policy_Permission_Action_Changed(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-/**
+/*
+*
 "Allowed" result changed due to role-policy added/removed
-  test1:Policy1(role granted) exist, allow=false;
-  test2:Role-Policy1 Added, allowed=true
-  test3:Role-Policy2 Added, allowed=false
-  test4:Role-Policy2 Removed, allowed=true
-  test5:Role-Policy1 Removed, allowed=false
+
+	test1:Policy1(role granted) exist, allow=false;
+	test2:Role-Policy1 Added, allowed=true
+	test3:Role-Policy2 Added, allowed=false
+	test4:Role-Policy2 Removed, allowed=true
+	test5:Role-Policy1 Removed, allowed=false
 */
 func TestMats_Cache_With_RolePolicy_Added(t *testing.T) {
 	appName := "TestCacheWithPolicyPermissionResChanged"
@@ -1064,7 +1074,8 @@ func TestMats_Cache_With_RolePolicy_Added(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-/**
+/*
+*
 "Allowed" result changed due to role-policy subject changed
 */
 func TestMats_Cache_With_RolePolicy_Subject_Changed(t *testing.T) {
@@ -1241,7 +1252,8 @@ func TestMats_Cache_With_RolePolicy_Subject_Changed(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-/**
+/*
+*
 "Allowed" result changed due to role-policy Condition changed
 */
 func TestMats_Cache_With_RolePolicy_Condition_Changed(t *testing.T) {

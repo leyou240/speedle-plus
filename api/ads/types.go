@@ -3,7 +3,7 @@
 
 package ads
 
-import "github.com/teramoby/speedle-plus/api/pms"
+import "github.com/leyou240/speedle-plus/api/pms"
 
 type Principal struct {
 	Type string `json:"type,omitempty"`
@@ -73,7 +73,7 @@ const (
 	Evaluation_Ignored         string = "ignored"
 )
 
-//reason for evaluation result
+// reason for evaluation result
 type Reason int32
 
 const (

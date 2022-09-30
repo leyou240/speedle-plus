@@ -9,9 +9,9 @@ import (
 	"os"
 	"testing"
 
-	"github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/pkg/eval"
-	_ "github.com/teramoby/speedle-plus/pkg/store/file"
+	"github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/pkg/eval"
+	_ "github.com/leyou240/speedle-plus/pkg/store/file"
 )
 
 func BenchmarkOne(b *testing.B) {

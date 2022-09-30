@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/pkg/eval"
+	"github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/pkg/eval"
 )
 
 // Wrap wraps an HTTP handler with a new HTTP handler for authorization

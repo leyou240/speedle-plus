@@ -8,8 +8,8 @@ import (
 	"fmt"
 	"os"
 
+	logging "github.com/leyou240/speedle-plus/pkg/logging"
 	log "github.com/sirupsen/logrus"
-	logging "github.com/teramoby/speedle-plus/pkg/logging"
 )
 
 type Config struct {

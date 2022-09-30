@@ -6,11 +6,11 @@ package pmsrest
 import (
 	"testing"
 
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/testutil"
+	"github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/testutil"
 )
 
-//Test REST API for Service Manangement
+// Test REST API for Service Manangement
 func TestMats_PMSRest_Service(t *testing.T) {
 	data := &[]testutil.TestCase{
 		{
@@ -180,7 +180,7 @@ func TestMats_PMSRest_Service(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Test REST API for Policy manangent
+// Test REST API for Policy manangent
 func TestMats_PMSRest_Policy(t *testing.T) {
 	srvName := "TestMats_PMSRest_Policy"
 	policyURI := testutil.URI_POLICY_MGMT + "service/" + srvName + "/policy"
@@ -462,7 +462,7 @@ func TestMats_PMSRest_Policy(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Test REST API for RolePolicy Manangement
+// Test REST API for RolePolicy Manangement
 func TestMats_PMSRest_RolePolicy(t *testing.T) {
 	srvName := "TestMats_PMSRest_RolePolicy"
 	rolePolicyURI := testutil.URI_POLICY_MGMT + "service/" + srvName + "/role-policy"

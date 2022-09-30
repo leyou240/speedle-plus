@@ -8,12 +8,12 @@ import (
 	"os"
 	"testing"
 
+	"github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/pkg/cfg"
+	"github.com/leyou240/speedle-plus/pkg/store"
+	_ "github.com/leyou240/speedle-plus/pkg/store/etcd"
+	_ "github.com/leyou240/speedle-plus/pkg/store/file"
 	log "github.com/sirupsen/logrus"
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/pkg/cfg"
-	"github.com/teramoby/speedle-plus/pkg/store"
-	_ "github.com/teramoby/speedle-plus/pkg/store/etcd"
-	_ "github.com/teramoby/speedle-plus/pkg/store/file"
 )
 
 func WriteToTempFile(content []byte) (string, error) {

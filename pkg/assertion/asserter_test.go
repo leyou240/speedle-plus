@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
 )
 
 func TestAssertion(t *testing.T) {

@@ -7,9 +7,9 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/teramoby/speedle-plus/3rdparty/github.com/Knetic/govaluate"
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/3rdparty/github.com/Knetic/govaluate"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/api/pms"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -206,7 +206,8 @@ func matchRolePolicyPrincipals(subjectPrincipalList []string, rolePolicyPrincipa
 
 }
 
-/**
+/*
+*
 It's regarded as matched only if all items in princs2 are included in princs1
 */
 func matchPrincipals(subjectPrincipalList []string, policyPrincipalList [][]string) bool {

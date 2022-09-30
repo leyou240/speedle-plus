@@ -6,15 +6,15 @@ package adsgrpc
 import (
 	"testing"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	adsPB "github.com/teramoby/speedle-plus/pkg/svcs/adsgrpc/pb"
-	pmsPB "github.com/teramoby/speedle-plus/pkg/svcs/pmsgrpc/pb"
-	"github.com/teramoby/speedle-plus/testutil"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	adsPB "github.com/leyou240/speedle-plus/pkg/svcs/adsgrpc/pb"
+	pmsPB "github.com/leyou240/speedle-plus/pkg/svcs/pmsgrpc/pb"
+	"github.com/leyou240/speedle-plus/testutil"
 )
 
 var POLICY_RELOAD_TIME = 500 //ms
 
-//TestMats_GRpc_IsAllowed_User, policy is "grant user userA read res1"
+// TestMats_GRpc_IsAllowed_User, policy is "grant user userA read res1"
 func TestMats_GRpc_IsAllowed_User(t *testing.T) {
 	sName := "TestMats_GRpc_IsAllowed_User"
 	pName := "Policy_allow_user"
@@ -203,9 +203,9 @@ func TestMats_GRpc_IsAllowed_User(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//TestMats_GRpc_IsAllowed_Role
-//policy is: grant role1 read res1
-//rolepolicy is: grant user userA role1,role2
+// TestMats_GRpc_IsAllowed_Role
+// policy is: grant role1 read res1
+// rolepolicy is: grant user userA role1,role2
 func TestMats_GRpc_IsAllowed_Role(t *testing.T) {
 	sName := "TestMats_GRpc_IsAllowed_Role"
 
@@ -345,8 +345,8 @@ func TestMats_GRpc_IsAllowed_Role(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//TestMats_GRpc_GetAllGrantedRoles_basic
-//rolepolicy is:
+// TestMats_GRpc_GetAllGrantedRoles_basic
+// rolepolicy is:
 // grant user userA role1,role2
 // grant user userA role3,role4 on res1
 func TestMats_GRpc_GetAllGrantedRoles_basic(t *testing.T) {
@@ -491,8 +491,8 @@ func TestMats_GRpc_GetAllGrantedRoles_basic(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//TestMats_GRpc_IsAllowed_Role
-//rolepolicy is:
+// TestMats_GRpc_IsAllowed_Role
+// rolepolicy is:
 // grant user userA role1,role2 on res1
 // grant user userA role3,role4 on res2
 // grant role role1 role5
@@ -688,7 +688,7 @@ func TestMats_GRpc_GetAllGrantedRoles_RoleToRole(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//TestMats_GRpc_GetAllGrantedPermission, policy is
+// TestMats_GRpc_GetAllGrantedPermission, policy is
 // "grant user userA read res1"
 // "grant user userA write res1"
 // "grant user userA role1"

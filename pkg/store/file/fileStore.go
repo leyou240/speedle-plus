@@ -11,12 +11,12 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/teramoby/speedle-plus/pkg/errors"
-	"github.com/teramoby/speedle-plus/pkg/suid"
+	"github.com/leyou240/speedle-plus/pkg/errors"
+	"github.com/leyou240/speedle-plus/pkg/suid"
 
 	"github.com/fsnotify/fsnotify"
+	"github.com/leyou240/speedle-plus/api/pms"
 	log "github.com/sirupsen/logrus"
-	"github.com/teramoby/speedle-plus/api/pms"
 )
 
 type Store struct {

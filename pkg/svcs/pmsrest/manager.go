@@ -8,19 +8,19 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/teramoby/speedle-plus/pkg/errors"
-	"github.com/teramoby/speedle-plus/pkg/httputils"
-	"github.com/teramoby/speedle-plus/pkg/logging"
-	"github.com/teramoby/speedle-plus/pkg/svcs/pmsimpl"
+	"github.com/leyou240/speedle-plus/pkg/errors"
+	"github.com/leyou240/speedle-plus/pkg/httputils"
+	"github.com/leyou240/speedle-plus/pkg/logging"
+	"github.com/leyou240/speedle-plus/pkg/svcs/pmsimpl"
 
 	"github.com/gorilla/mux"
 
-	"github.com/teramoby/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/api/pms"
 
 	"time"
 
+	"github.com/leyou240/speedle-plus/pkg/svcs"
 	log "github.com/sirupsen/logrus"
-	"github.com/teramoby/speedle-plus/pkg/svcs"
 )
 
 type RESTService struct {

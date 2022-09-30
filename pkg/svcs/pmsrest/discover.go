@@ -9,13 +9,13 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
+	"github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/pkg/errors"
+	"github.com/leyou240/speedle-plus/pkg/httputils"
+	"github.com/leyou240/speedle-plus/pkg/logging"
+	"github.com/leyou240/speedle-plus/pkg/store"
 	log "github.com/sirupsen/logrus"
-	"github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/pkg/errors"
-	"github.com/teramoby/speedle-plus/pkg/httputils"
-	"github.com/teramoby/speedle-plus/pkg/logging"
-	"github.com/teramoby/speedle-plus/pkg/store"
 )
 
 type GetDiscoverRequestsResponse struct {

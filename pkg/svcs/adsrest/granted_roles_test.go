@@ -1,15 +1,16 @@
 //Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
 //Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 
-//+build runtime_test
+//go:build runtime_test
+// +build runtime_test
 
 package adsrest
 
 import (
 	"testing"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/testutil"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/testutil"
 )
 
 var URI_GRANTED_ROLES = "/authz-check/v1/all-granted-roles"
@@ -86,7 +87,7 @@ func TestMats_GrantedRole_Simple(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-complex-role"
+// Policies are defined in check_prepare_test.go : "service-complex-role"
 func TestLrg_GrantedRole_RoleEmbeded_bug120(t *testing.T) {
 	data := &[]testutil.TestCase{
 		{

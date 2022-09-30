@@ -1,5 +1,5 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
+// Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
+// Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 package adsrest
 
 import (
@@ -12,8 +12,8 @@ import (
 
 	"net/http/httptest"
 
-	"github.com/teramoby/speedle-plus/pkg/assertion"
-	"github.com/teramoby/speedle-plus/pkg/svcs"
+	"github.com/leyou240/speedle-plus/pkg/assertion"
+	"github.com/leyou240/speedle-plus/pkg/svcs"
 )
 
 func TestSettingPrincipalHeader(t *testing.T) {

@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
 	log "github.com/sirupsen/logrus"
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
 )
 
 const (

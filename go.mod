@@ -1,4 +1,4 @@
-module github.com/teramoby/speedle-plus
+module github.com/leyou240/speedle-plus
 
 go 1.19
 

@@ -3,7 +3,7 @@ package ads
 import (
 	"strconv"
 
-	"github.com/teramoby/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/api/pms"
 )
 
 func (p *EvaluationResult) AddRolePolicy(rolePolicy *pms.RolePolicy, result bool) {

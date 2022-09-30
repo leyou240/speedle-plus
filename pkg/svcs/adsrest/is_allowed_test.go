@@ -1,7 +1,8 @@
 //Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
 //Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 
-//+build runtime_test
+//go:build runtime_test
+// +build runtime_test
 
 package adsrest
 
@@ -9,9 +10,9 @@ import (
 	"testing"
 	"time"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/pkg/svcs"
-	"github.com/teramoby/speedle-plus/testutil"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/pkg/svcs"
+	"github.com/leyou240/speedle-plus/testutil"
 )
 
 const (
@@ -209,8 +210,8 @@ func TestMats_IsAllowed_SimpleGrant(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-simple"
-//Policy is simple to Deny user/group/role to do action on resource.
+// Policies are defined in check_prepare_test.go : "service-simple"
+// Policy is simple to Deny user/group/role to do action on resource.
 func TestMats_IsAllowed_SimpleDeny(t *testing.T) {
 	URI_IS_ALLOWD := svcs.PolicyAtzPath + "is-allowed"
 	data := &[]testutil.TestCase{
@@ -377,8 +378,8 @@ func TestMats_IsAllowed_BothGrantAndDeny(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-builtin-attribute"
-//Policies' conditions contain builtin attribute
+// Policies are defined in check_prepare_test.go : "service-builtin-attribute"
+// Policies' conditions contain builtin attribute
 func TestLrg_IsAllowed_ConditionWithBuiltinAttribute(t *testing.T) {
 	URI_IS_ALLOWD := svcs.PolicyAtzPath + "is-allowed"
 	data := &[]testutil.TestCase{
@@ -627,8 +628,8 @@ func TestLrg_IsAllowed_ConditionWithBuiltinAttribute(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-complex"
-//Policies are complex (Policy, rolePolicy,Condition, Grant,Deny…)
+// Policies are defined in check_prepare_test.go : "service-complex"
+// Policies are complex (Policy, rolePolicy,Condition, Grant,Deny…)
 func TestLrg_IsAllowed_Complex_bug214(t *testing.T) {
 	URI_IS_ALLOWD := svcs.PolicyAtzPath + "is-allowed"
 	data := &[]testutil.TestCase{
@@ -727,8 +728,8 @@ func TestLrg_IsAllowed_Complex_bug214(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-complex-role
-//Multi grant/deny role policies (role embeded) exist
+// Policies are defined in check_prepare_test.go : "service-complex-role
+// Multi grant/deny role policies (role embeded) exist
 func TestLrg_IsAllowed_Complex_Role_bug120(t *testing.T) {
 	URI_IS_ALLOWD := svcs.PolicyAtzPath + "is-allowed"
 	data := &[]testutil.TestCase{
@@ -989,8 +990,8 @@ func TestLrg_IsAllowed_Complex_Role_bug120(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-with-resexpr"
-//Multi grant/deny policies on resource expression
+// Policies are defined in check_prepare_test.go : "service-with-resexpr"
+// Multi grant/deny policies on resource expression
 func TestLrg_IsAllowed_Complex_ResExpr_bug113(t *testing.T) {
 	URI_IS_ALLOWD := svcs.PolicyAtzPath + "is-allowed"
 	data := &[]testutil.TestCase{
@@ -1202,7 +1203,7 @@ func TestLrg_IsAllowed_Complex_ResExpr_bug113(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policies are defined in check_prepare_test.go : "service-with-complex-principle-policy"
+// Policies are defined in check_prepare_test.go : "service-with-complex-principle-policy"
 func TestMats_IsAllowed_ComplexPrincipleInPolicy(t *testing.T) {
 	URI_IS_ALLOWD := svcs.PolicyAtzPath + "is-allowed"
 	data := &[]testutil.TestCase{
@@ -1346,8 +1347,8 @@ func TestMats_IsAllowed_ComplexPrincipleInPolicy(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//comment this out as role policy does not support AND-Principal
-//Policies are defined in check_prepare_test.go : "service-with-complex-principle_rolePolicy"
+// comment this out as role policy does not support AND-Principal
+// Policies are defined in check_prepare_test.go : "service-with-complex-principle_rolePolicy"
 func _TestMats_IsAllowed_ComplexPrincipleInRolePolicy(t *testing.T) {
 	URI_IS_ALLOWD := svcs.PolicyAtzPath + "is-allowed"
 	data := &[]testutil.TestCase{

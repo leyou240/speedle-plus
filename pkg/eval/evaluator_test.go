@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"testing"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/api/pms"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/api/pms"
 )
 
 func TestGetPermissions(t *testing.T) {
@@ -352,8 +352,8 @@ func TestGetPermissions(t *testing.T) {
 	}
 }
 
-//empty resource and empty resource expression means any resource
-//empty principals means any principal
+// empty resource and empty resource expression means any resource
+// empty principals means any principal
 func TestGetRoles_empty(t *testing.T) {
 	alice := adsapi.Subject{
 		Principals: []*adsapi.Principal{
@@ -541,9 +541,9 @@ func TestGetRoles_empty(t *testing.T) {
 	}
 }
 
-//empty Permissions means any permission
-//empty resource and empty resource expression means any resource
-//empty principals means any principal
+// empty Permissions means any permission
+// empty resource and empty resource expression means any resource
+// empty principals means any principal
 func TestIsAllowed_empty(t *testing.T) {
 	alice := adsapi.Subject{
 		Principals: []*adsapi.Principal{

@@ -10,8 +10,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/leyou240/speedle-plus/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"github.com/teramoby/speedle-plus/pkg/errors"
 )
 
 var embededStarted = false

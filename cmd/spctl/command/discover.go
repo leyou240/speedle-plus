@@ -12,9 +12,9 @@ import (
 	"strings"
 	"time"
 
+	"github.com/leyou240/speedle-plus/cmd/spctl/client"
+	"github.com/leyou240/speedle-plus/pkg/svcs/pmsrest"
 	"github.com/spf13/cobra"
-	"github.com/teramoby/speedle-plus/cmd/spctl/client"
-	"github.com/teramoby/speedle-plus/pkg/svcs/pmsrest"
 )
 
 var (

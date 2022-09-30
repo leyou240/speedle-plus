@@ -4,16 +4,16 @@
 package eval
 
 import (
-	"github.com/teramoby/speedle-plus/pkg/cfg"
-	"github.com/teramoby/speedle-plus/pkg/store"
+	"github.com/leyou240/speedle-plus/pkg/cfg"
+	"github.com/leyou240/speedle-plus/pkg/store"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/api/pms"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/api/pms"
 
 	log "github.com/sirupsen/logrus"
 )
 
-//New creates a policy evaluator based on the given configuration file
+// New creates a policy evaluator based on the given configuration file
 func New(configFile string) (InternalEvaluator, error) {
 	conf, err := cfg.ReadConfig(configFile)
 	if err != nil {
@@ -38,7 +38,7 @@ func NewFromFile(fileLoc string, isWatch bool) (adsapi.PolicyEvaluator, error) {
 	})
 }
 
-//NewFromConfig creates a policy evaluator based on the given configuration file
+// NewFromConfig creates a policy evaluator based on the given configuration file
 func NewFromConfig(conf *cfg.Config) (InternalEvaluator, error) {
 	s, err := store.NewStore(conf.StoreConfig.StoreType, conf.StoreConfig.StoreProps)
 	if err != nil {

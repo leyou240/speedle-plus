@@ -1,11 +1,11 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
+// Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
+// Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 package eval
 
 import (
 	"testing"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
 )
 
 // test issue :https://gitlab-odx.oracledx.com/wcai/kauthz/issues/232
@@ -178,9 +178,12 @@ func TestGetRoles232_3(t *testing.T) {
 
 // deny transitivity
 // global: grant role1 role2
-//			deny role3
+//
+//	deny role3
+//
 // local: grant role2 role3
-//			deny role1
+//
+//	deny role1
 func TestGetRoles232_4(t *testing.T) {
 	const appStream string = `
 	{

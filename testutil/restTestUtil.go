@@ -18,9 +18,9 @@ import (
 	"reflect"
 	"strings"
 
-	pmsapi "github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/pkg/cmd/flags"
-	"github.com/teramoby/speedle-plus/pkg/svcs"
+	pmsapi "github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/pkg/cmd/flags"
+	"github.com/leyou240/speedle-plus/pkg/svcs"
 )
 
 const (

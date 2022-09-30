@@ -13,7 +13,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/teramoby/speedle-plus/pkg/httputils"
+	"github.com/leyou240/speedle-plus/pkg/httputils"
 )
 
 type Client struct {

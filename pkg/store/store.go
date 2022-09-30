@@ -7,8 +7,8 @@ import (
 	"sort"
 	"sync"
 
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/pkg/errors"
+	"github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/pkg/errors"
 )
 
 var (

@@ -6,7 +6,7 @@ package eval
 import (
 	"testing"
 
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
 )
 
 func TestRolePolicyWithoutResWithCondition(t *testing.T) {

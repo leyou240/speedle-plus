@@ -9,7 +9,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/teramoby/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/api/pms"
 )
 
 func TestParsingPolicy(t *testing.T) {
@@ -56,11 +56,11 @@ func TestEffect(t *testing.T) {
 			want: deny,
 		},
 		{
-			cmd: `		Grant user ...`,
+			cmd:  `		Grant user ...`,
 			want: grant,
 		},
 		{
-			cmd: `		Deny user ...`,
+			cmd:  `		Deny user ...`,
 			want: deny,
 		},
 		{

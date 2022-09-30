@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/teramoby/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/api/pms"
 )
 
 func TestPolicyCacheBasic(t *testing.T) {

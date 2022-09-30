@@ -6,11 +6,11 @@ package pmsgrpc
 import (
 	"testing"
 
-	"github.com/teramoby/speedle-plus/pkg/svcs/pmsgrpc/pb"
-	"github.com/teramoby/speedle-plus/testutil"
+	"github.com/leyou240/speedle-plus/pkg/svcs/pmsgrpc/pb"
+	"github.com/leyou240/speedle-plus/testutil"
 )
 
-//Test GRpc API for Service Manangement
+// Test GRpc API for Service Manangement
 func TestMats_GRpc_Service(t *testing.T) {
 	sName := "TestMats_GRpc_Sevice"
 	sName1 := "TestMats_GRpc_Sevice1"
@@ -135,7 +135,7 @@ func TestMats_GRpc_Service(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Test GRpc API for Policy Manangement
+// Test GRpc API for Policy Manangement
 func TestMats_GRpc_Policy(t *testing.T) {
 	sName := "TestMats_GRpc_Policy"
 
@@ -457,8 +457,8 @@ func TestMats_GRpc_Policy(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Failed by issue:https://gitlab-odx.oracledx.com/wcai/kauthz/issues/42
-//Test GRpc API for RolePolicy Manangement
+// Failed by issue:https://gitlab-odx.oracledx.com/wcai/kauthz/issues/42
+// Test GRpc API for RolePolicy Manangement
 func TestMats_GRpc_RolePolicy(t *testing.T) {
 	sName := "TestMats_GRpc_Policy"
 

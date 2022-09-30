@@ -1,18 +1,19 @@
 //Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
 //Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 
-//+build runtime_test
+//go:build runtime_test
+// +build runtime_test
 
 package adsrest
 
 import (
-	adsapi "github.com/teramoby/speedle-plus/api/ads"
-	"github.com/teramoby/speedle-plus/testutil"
+	adsapi "github.com/leyou240/speedle-plus/api/ads"
+	"github.com/leyou240/speedle-plus/testutil"
 	"testing"
 )
 
-//Policies are defined in check_prepare_test.go : "service-condition-attribute"
-//Policy's condition contains bool attribute
+// Policies are defined in check_prepare_test.go : "service-condition-attribute"
+// Policy's condition contains bool attribute
 func TestMats_IsAllowed_Attri_Bool(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -244,8 +245,8 @@ func TestMats_IsAllowed_Attri_Bool(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Failed due to issue#162 in Gitlab
-//Policy's condition contains bool attribute, and no space between the operators in bool expression
+// Failed due to issue#162 in Gitlab
+// Policy's condition contains bool attribute, and no space between the operators in bool expression
 func TestLrg_IsAllowed_Attri_Bool_NoSpace_Between_Operator_bug162(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -319,7 +320,7 @@ func TestLrg_IsAllowed_Attri_Bool_NoSpace_Between_Operator_bug162(t *testing.T) 
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policy's condition contains Numeric attribute
+// Policy's condition contains Numeric attribute
 func TestMats_IsAllowed_Attri_Num(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -789,8 +790,8 @@ func TestMats_IsAllowed_Attri_Num(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Failed due to issue#163 in Gitlab
-//Policy's condition contains String attribute
+// Failed due to issue#163 in Gitlab
+// Policy's condition contains String attribute
 func TestMats_IsAllowed_Attri_String(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -1219,7 +1220,7 @@ func TestMats_IsAllowed_Attri_String(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policy's condition contains Datetime attribute
+// Policy's condition contains Datetime attribute
 func TestMats_IsAllowed_Attri_Datetime(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -1595,7 +1596,7 @@ func TestMats_IsAllowed_Attri_Datetime(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Datetime is not in valid format
+// Datetime is not in valid format
 func TestLrg_IsAllowed_Negative_Datetime_InvalidFormat(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -1663,7 +1664,7 @@ func TestLrg_IsAllowed_Negative_Datetime_InvalidFormat(t *testing.T) {
 
 }
 
-//Policy's condition is string in (string_array)
+// Policy's condition is string in (string_array)
 func TestMats_IsAllowed_Attri_InArray_String(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -1869,7 +1870,7 @@ func TestMats_IsAllowed_Attri_InArray_String(t *testing.T) {
 
 }
 
-//Policy's condition is num in (num_array)
+// Policy's condition is num in (num_array)
 func TestMats_IsAllowed_Attri_InArray_Num(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -2054,7 +2055,7 @@ func TestMats_IsAllowed_Attri_InArray_Num(t *testing.T) {
 
 }
 
-//Policy's condition is bool in (boolean_array)
+// Policy's condition is bool in (boolean_array)
 func TestMats_IsAllowed_Attri_InArray_Boolean(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -2143,7 +2144,7 @@ func TestMats_IsAllowed_Attri_InArray_Boolean(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Policy's condition is S1 in (S2, S3), and S* may be any type
+// Policy's condition is S1 in (S2, S3), and S* may be any type
 func TestMats_IsAllowed_Attri_InArray_All(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -2344,7 +2345,7 @@ func TestMats_IsAllowed_Attri_InArray_All(t *testing.T) {
 
 }
 
-//Policy's condition is isSubSet(S1,S2),  and S* may be any type
+// Policy's condition is isSubSet(S1,S2),  and S* may be any type
 func TestMats_IsAllowed_Attri_IsSubset(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -2562,7 +2563,7 @@ func TestMats_IsAllowed_Attri_IsSubset(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//An array can't be used in left hand of in operator
+// An array can't be used in left hand of in operator
 func TestLrg_IsAllowed_Negative_LeftHandOfInIsArray(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -2593,8 +2594,8 @@ func TestLrg_IsAllowed_Negative_LeftHandOfInIsArray(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//disable temporarily for bug#179.
-//Policy's condition is datetime in (datetime_array)
+// disable temporarily for bug#179.
+// Policy's condition is datetime in (datetime_array)
 func TestMats_IsAllowed_Attri_In_Datetime(t *testing.T) {
 
 	data := &[]testutil.TestCase{
@@ -2683,8 +2684,8 @@ func TestMats_IsAllowed_Attri_In_Datetime(t *testing.T) {
 	testutil.RunTestCases(t, data, nil)
 }
 
-//Failed due to issue#163 in Gitlab
-//Boolean attribute is invalid (string or num)
+// Failed due to issue#163 in Gitlab
+// Boolean attribute is invalid (string or num)
 func TestLrg_IsAllowed_Negative_Attri_Bool_bug163(t *testing.T) {
 
 	data := &[]testutil.TestCase{

@@ -6,11 +6,11 @@ package eval
 import (
 	"regexp"
 
-	"github.com/teramoby/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/api/pms"
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/teramoby/speedle-plus/3rdparty/github.com/Knetic/govaluate"
+	"github.com/leyou240/speedle-plus/3rdparty/github.com/Knetic/govaluate"
 )
 
 type RolePolicyCacheData struct {

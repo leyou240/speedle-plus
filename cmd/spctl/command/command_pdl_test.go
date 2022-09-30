@@ -7,10 +7,10 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/testutil"
-	"github.com/teramoby/speedle-plus/testutil/msg"
-	"github.com/teramoby/speedle-plus/testutil/param"
+	"github.com/leyou240/speedle-plus/api/pms"
+	"github.com/leyou240/speedle-plus/testutil"
+	"github.com/leyou240/speedle-plus/testutil/msg"
+	"github.com/leyou240/speedle-plus/testutil/param"
 )
 
 func getCmdTestDataForCreateService(sName string, sType string) testutil.TestCase {

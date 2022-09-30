@@ -6,8 +6,8 @@ package logging
 import (
 	"strings"
 
+	"github.com/leyou240/speedle-plus/pkg/errors"
 	"github.com/natefinch/lumberjack"
-	"github.com/teramoby/speedle-plus/pkg/errors"
 	log "github.com/sirupsen/logrus"
 )
 
