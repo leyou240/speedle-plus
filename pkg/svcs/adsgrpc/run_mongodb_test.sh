@@ -3,7 +3,7 @@
 shell_dir=$(dirname $0)
 
 set -ex
-source ${GOPATH}/src/github.com/teramoby/speedle-plus/setTestEnv.sh
+source ${GOPATH}/src/github.com/leyou240/speedle-plus/setTestEnv.sh
 
 go clean -testcache
 #Reconfig spctl
@@ -15,4 +15,4 @@ startADS --config-file ${shell_dir}/../pmsrest/config_mongodb.json
 
 sleep 5
 ${GOPATH}/bin/spctl delete service --all
-go test ${TEST_OPTS} github.com/teramoby/speedle-plus/pkg/svcs/adsgrpc -run=TestMats
+go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/svcs/adsgrpc -run=TestMats
