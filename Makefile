@@ -41,18 +41,18 @@ test: testAll
 testAll: speedleUnitTests testSpeedleRest testSpeedleGRpc testSpctl testSpeedleRestADSCheck testSpeedleGRpcADSCheck testSpeedleTls
 
 speedleUnitTests:
-	go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/cfg
-	go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/eval
-	go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/store/file
-	go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/store/etcd
-	go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/store/mongodb
-	go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/pdl
-	go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/suid
-	go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/assertion
+	go test ${TEST_OPTS} ./pkg/cfg
+	go test ${TEST_OPTS} ./pkg/eval
+	go test ${TEST_OPTS} ./pkg/store/file
+	go test ${TEST_OPTS} ./pkg/store/etcd
+	go test ${TEST_OPTS} ./pkg/store/mongodb
+	go test ${TEST_OPTS} ./pkg/pdl
+	go test ${TEST_OPTS} ./pkg/suid
+	go test ${TEST_OPTS} ./pkg/assertion
 	go clean -testcache
-	STORE_TYPE=etcd go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/eval
+	STORE_TYPE=etcd go test ${TEST_OPTS} ./pkg/eval
 	go clean -testcache
-	STORE_TYPE=mongodb go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/eval
+	#STORE_TYPE=mongodb go test ${TEST_OPTS} github.com/leyou240/speedle-plus/pkg/eval
 
 testSpeedleRest:
 	pkg/svcs/pmsrest/run_file_test.sh
