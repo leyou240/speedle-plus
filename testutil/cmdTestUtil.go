@@ -6,7 +6,6 @@ package testutil
 import (
 	"encoding/json"
 	"errors"
-	"io/ioutil"
 	"log"
 	"os"
 	"reflect"
@@ -21,7 +20,7 @@ const (
 	SP_APP_NAME = "SP_APP_NAME"
 )
 
-//Test Methods for Speedle
+// Test Methods for Speedle
 const (
 	METHOD_CONFIG = "config"
 )
@@ -33,7 +32,7 @@ type CmdClient struct {
 	output string
 }
 
-//execute spxctl command with specified parameter and test data
+// execute spxctl command with specified parameter and test data
 func (client *CmdClient) ExecuteCmd(parameter string, data *CmdTestData) error {
 	cmdStr := client.cmd + parameter
 
@@ -56,7 +55,7 @@ func (client *CmdClient) ExecuteCmd(parameter string, data *CmdTestData) error {
 	return nil
 }
 
-//Get the test client for Cmd
+// Get the test client for Cmd
 func NewCmdClient() *CmdClient {
 	var cmdStr string
 	binPath := os.Getenv("GOPATH")
@@ -76,7 +75,7 @@ func NewCmdClient() *CmdClient {
 	}
 }
 
-//Get the test client for Cmd
+// Get the test client for Cmd
 func NewCmdClient_token(token string) *CmdClient {
 	var cmdStr string
 	binPath := os.Getenv("GOPATH")
@@ -97,7 +96,7 @@ func NewCmdClient_token(token string) *CmdClient {
 
 //--------------CmdTest and CmdTestData definition-----------
 
-//test data for spctl command
+// test data for spctl command
 type CmdTestData struct {
 	Param        string      //parameter string after spxctl command
 	FileContent  interface{} //The content of File (JSON or PDL )
@@ -115,7 +114,7 @@ func NewCmdTest() TestExecuter {
 	return &CmdTest{}
 }
 
-//Prepare for Test Execution. Set the default func in testcase
+// Prepare for Test Execution. Set the default func in testcase
 func (test *CmdTest) PreExecute(testcase *TestCase, ctx *TestContext) error {
 	test.Client = NewCmdClient()
 	testcase.SetVerifyTestFunc(VerifyCmdTestByDefault)
@@ -168,7 +167,7 @@ func (test *CmdTest) PreExecute(testcase *TestCase, ctx *TestContext) error {
 	return nil
 }
 
-//Execute current test with test data and context
+// Execute current test with test data and context
 func (test *CmdTest) Execute(testcase *TestCase, ctx *TestContext) error {
 	testData := testcase.Data
 	cmdTD := testData.(*CmdTestData)
@@ -188,7 +187,7 @@ func (test *CmdTest) Execute(testcase *TestCase, ctx *TestContext) error {
 	return nil
 }
 
-//Parse output result for creating service/policy/rolepolicy
+// Parse output result for creating service/policy/rolepolicy
 func (test *CmdTest) ParseOutputForCreate(testData interface{}) error {
 	cmdTD := testData.(*CmdTestData)
 	tmp := test.Client.output
@@ -207,7 +206,7 @@ func (test *CmdTest) ParseOutputForCreate(testData interface{}) error {
 	return nil
 }
 
-//Parse output result for getting service/policy/rolepolicy
+// Parse output result for getting service/policy/rolepolicy
 func (test *CmdTest) ParseOutputForGet(data interface{}) error {
 	cmdTD := data.(*CmdTestData)
 
@@ -227,7 +226,7 @@ func (test *CmdTest) ParseOutputForGet(data interface{}) error {
 
 //-------------Common util func for REST------------------------
 
-//Verify CmdTestData By Default
+// Verify CmdTestData By Default
 func VerifyCmdTestByDefault(data interface{}, context *TestContext) bool {
 	cmdTD, ok := data.(*CmdTestData)
 	if !ok {
@@ -267,13 +266,13 @@ func checkFile(fileNameWithPath string) {
 }
 
 func createFile(fileNameWithPath string, content []byte) {
-	err := ioutil.WriteFile(fileNameWithPath, content, 0644)
+	err := os.WriteFile(fileNameWithPath, content, 0644)
 	if err != nil {
 		TestLog.Log("Fail to write to file. Err=" + err.Error())
 	}
 }
 
-//generate a file according to pdl list
+// generate a file according to pdl list
 func GeneratePdlFile(fileNameWithPath string, pdlList []string) {
 	var tmp = ""
 	if pdlList != nil {
@@ -285,7 +284,7 @@ func GeneratePdlFile(fileNameWithPath string, pdlList []string) {
 	createFile(fileNameWithPath, buf)
 }
 
-//generate a json file according to service object
+// generate a json file according to service object
 func GenerateJsonFileWithService(fileNameWithPath string, service *pmsapi.Service) {
 	tmp, err := json.Marshal(service)
 	if err != nil {
@@ -294,7 +293,7 @@ func GenerateJsonFileWithService(fileNameWithPath string, service *pmsapi.Servic
 	createFile(fileNameWithPath, tmp)
 }
 
-//generate a json file according to policy object
+// generate a json file according to policy object
 func GenerateJsonFileWithPolicy(fileNameWithPath string, policy *pmsapi.Policy) {
 	tmp, err := json.Marshal(policy)
 	if err != nil {
@@ -303,7 +302,7 @@ func GenerateJsonFileWithPolicy(fileNameWithPath string, policy *pmsapi.Policy) 
 	createFile(fileNameWithPath, tmp)
 }
 
-//generate a json file according to role policy object
+// generate a json file according to role policy object
 func GenerateJsonFileWithRolePolicy(fileNameWithPath string, service *pmsapi.RolePolicy) {
 	tmp, err := json.Marshal(service)
 	if err != nil {
@@ -312,7 +311,7 @@ func GenerateJsonFileWithRolePolicy(fileNameWithPath string, service *pmsapi.Rol
 	createFile(fileNameWithPath, tmp)
 }
 
-//Create service with PDL file
+// Create service with PDL file
 func (client *CmdClient) CreateServiceWithPDL(serviceName string, pdl []string) bool {
 	//delete service firstly
 	cmdStr := client.cmd + param.DELETE_SERVICE(serviceName)

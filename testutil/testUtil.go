@@ -12,7 +12,7 @@ import (
 	"github.com/teramoby/speedle-plus/pkg/svcs/pmsgrpc/pb"
 )
 
-//Test Methods for Speedle
+// Test Methods for Speedle
 const (
 	METHOD_CREATE_SERVICE          = "createService"
 	METHOD_GET_SERVICE             = "getService" //not used in grpc
@@ -36,10 +36,14 @@ const (
 	ERROR_SPEEDLE_NOT_SUPPORTED = "speedle doesn't support"
 )
 
-/**
-  Function called after create/get policy test
-  Modify the ID in outputBody and expected body
-**/
+/*
+*
+
+	Function called after create/get policy test
+	Modify the ID in outputBody and expected body
+
+*
+*/
 func PostCreateGetPolicyTest(data interface{}, context *TestContext) {
 	if restTD, ok := data.(*RestTestData); ok {
 		postCreateGetPolicyTest_rest(restTD.OutputBody, restTD.ExpectedBody, context)
@@ -134,7 +138,7 @@ func postListPolicyTest_rest(outputBody interface{}, expectedBody interface{}, c
 		return
 	}
 
-	newOutputBody := []*pms.Policy{}
+	var newOutputBody []*pms.Policy
 	if expectedBody != nil {
 		expectedPolicy, ok := expectedBody.(*[]*pms.Policy)
 		if !ok {
@@ -185,7 +189,7 @@ func postListPolicyTest_grpc(outputBody interface{}, expectedBody interface{}, c
 		return
 	}
 
-	newOutputBody := []*pb.Policy{}
+	var newOutputBody []*pb.Policy
 	if expectedBody != nil {
 		expectedPolicy, ok := expectedBody.(*[]*pb.Policy)
 		if !ok {
@@ -218,10 +222,14 @@ func postListPolicyTest_grpc(outputBody interface{}, expectedBody interface{}, c
 	*outputPolicy = newOutputBody
 }
 
-/**
-  Function called after create/get role policy test
-  Modify the ID in outputBody and expected body
-**/
+/*
+*
+
+	Function called after create/get role policy test
+	Modify the ID in outputBody and expected body
+
+*
+*/
 func PostCreateGetRolePolicyTest(data interface{}, context *TestContext) {
 	if restTD, ok := data.(*RestTestData); ok {
 		postCreateGetRolePolicyTest_rest(restTD.OutputBody, restTD.ExpectedBody, context)
@@ -279,10 +287,14 @@ func postCreateGetRolePolicyTest_grpc(outputBody interface{}, expectedBody inter
 	}
 }
 
-/**
-  Function called after List role  policy test
-  Modify the ID in outputBody and expected body
-**/
+/*
+*
+
+	Function called after List role  policy test
+	Modify the ID in outputBody and expected body
+
+*
+*/
 func PostListRolePolicyTest(data interface{}, context *TestContext) {
 	if restTD, ok := data.(*RestTestData); ok {
 		postListRolePolicyTest_rest(restTD.OutputBody, restTD.ExpectedBody, context)
@@ -310,7 +322,7 @@ func postListRolePolicyTest_rest(outputBody interface{}, expectedBody interface{
 		return
 	}
 
-	newOutputBody := []*pms.RolePolicy{}
+	var newOutputBody []*pms.RolePolicy
 	if expectedBody != nil {
 		expectedPolicy, ok := expectedBody.(*[]*pms.RolePolicy)
 		if !ok {
@@ -355,7 +367,7 @@ func postListRolePolicyTest_grpc(outputBody interface{}, expectedBody interface{
 		return
 	}
 
-	newOutputBody := []*pb.RolePolicy{}
+	var newOutputBody []*pb.RolePolicy
 	if expectedBody != nil {
 		expectedPolicy, ok := expectedBody.(*[]*pb.RolePolicy)
 		if !ok {
@@ -385,10 +397,14 @@ func postListRolePolicyTest_grpc(outputBody interface{}, expectedBody interface{
 	*outputPolicy = newOutputBody
 }
 
-/**
-  Function called after Create or Get service test
-  Modify the ID in outputBody and expected body
-**/
+/*
+*
+
+	Function called after Create or Get service test
+	Modify the ID in outputBody and expected body
+
+*
+*/
 func PostCreateGetServiceTest(data interface{}, context *TestContext) {
 	if restTD, ok := data.(*RestTestData); ok {
 		postCreateGetServiceTest_rest(restTD.OutputBody, restTD.ExpectedBody, context)
@@ -451,10 +467,14 @@ func postCreateGetServiceTest_grpc(outputBody interface{}, expectedBody interfac
 	}
 }
 
-/**
-  Function called after listing service test
-  Modify the ID in outputBody and expected body
-**/
+/*
+*
+
+	Function called after listing service test
+	Modify the ID in outputBody and expected body
+
+*
+*/
 func PostListServiceTest(data interface{}, context *TestContext) {
 	if restTD, ok := data.(*RestTestData); ok {
 		postListServiceTest_rest(restTD.OutputBody, restTD.ExpectedBody, context)
@@ -481,7 +501,7 @@ func postListServiceTest_rest(outputBody interface{}, expectedBody interface{}, 
 			adjustMap[(*outputService)[i].Name] = (*outputService)[i]
 		}
 
-		newOutputBody := []*pms.Service{}
+		var newOutputBody []*pms.Service
 		if expectedBody != nil {
 			expectedService, ok := expectedBody.(*[]*pms.Service)
 			if !ok {
@@ -520,7 +540,7 @@ func postListServiceTest_grpc(outputBody interface{}, expectedBody interface{}, 
 			adjustMap[(*outputService)[i].Name] = (*outputService)[i]
 		}
 
-		newOutputBody := []*pb.Service{}
+		var newOutputBody []*pb.Service
 		if expectedBody != nil {
 			expectedService, ok := expectedBody.(*[]*pb.Service)
 			if !ok {
@@ -545,7 +565,7 @@ func postListServiceTest_grpc(outputBody interface{}, expectedBody interface{}, 
 	}
 }
 
-//Sort the output by role name string
+// Sort the output by role name string
 func PostGetAllGrantedRoles(data interface{}, context *TestContext) {
 	if restTD, ok := data.(*RestTestData); ok {
 		postGetAllGrantedRoles_rest(restTD.OutputBody, restTD.ExpectedBody, context)
@@ -566,7 +586,7 @@ func postGetAllGrantedRoles_rest(outputBody interface{}, expectedBody interface{
 
 }
 
-//Sort the output by resource name string
+// Sort the output by resource name string
 func PostGetAllGrantedPermissions(data interface{}, context *TestContext) {
 	if restTD, ok := data.(*RestTestData); ok {
 		postGetAllGrantedPermissions_rest(restTD.OutputBody, restTD.ExpectedBody, context)
@@ -598,7 +618,7 @@ func postGetAllGrantedPermissions_rest(outputBody interface{}, expectedBody inte
 		}
 		sort.Strings(res)
 
-		newOutputBody := []pms.Permission{}
+		var newOutputBody []pms.Permission
 		for _, v := range adjustMap {
 			newOutputBody = append(newOutputBody, v)
 		}
@@ -611,8 +631,8 @@ func postGetAllGrantedPermissions_rest(outputBody interface{}, expectedBody inte
 
 }
 
-//Function called before Get/Delete policy/rolepolicy
-//Update the policy/rolepolicy name with ID in the request
+// Function called before Get/Delete policy/rolepolicy
+// Update the policy/rolepolicy name with ID in the request
 // since we only support get/delete with ID
 func PreGetDeletePolicyTest(data interface{}, context *TestContext) {
 	if _, ok := data.(*RestTestData); ok {
@@ -626,9 +646,9 @@ func PreGetDeletePolicyTest(data interface{}, context *TestContext) {
 	}
 }
 
-//update policy/rolepolicy's name with ID in URI
-//the uri should be like http://127.0.0.1:6733/policy-mgmt/v1/service/srv1/policy/policy1
-//update policy1 with its's ID
+// update policy/rolepolicy's name with ID in URI
+// the uri should be like http://127.0.0.1:6733/policy-mgmt/v1/service/srv1/policy/policy1
+// update policy1 with its's ID
 func preGetDeletePolicy_rest(data interface{}, context *TestContext) {
 	restTD, _ := data.(*RestTestData)
 	pos := strings.LastIndex(restTD.URI, "/")
@@ -639,8 +659,8 @@ func preGetDeletePolicy_rest(data interface{}, context *TestContext) {
 	}
 }
 
-//Set policyID in grpc request. Name is specified in request.PolicyID or request.RolePolicyID
-//And we should update it with ID of policy/rolePolicy
+// Set policyID in grpc request. Name is specified in request.PolicyID or request.RolePolicyID
+// And we should update it with ID of policy/rolePolicy
 func preGetDeletePolicy_grpc(data interface{}, context *TestContext) {
 	grpcTD := data.(*GRpcTestData)
 	request, ok := grpcTD.InputBody.(*pb.PolicyQueryRequest)
@@ -732,7 +752,7 @@ func InitSpecialNames() {
 	}
 }
 
-//CompareStringArray_NoOrder check two string arrays containing same elements ignoring the order
+// CompareStringArray_NoOrder check two string arrays containing same elements ignoring the order
 func CompareStringArray_NoOrder(strArray1 []string, strArray2 []string) bool {
 	TestLog.Logf("CompareStringArray_NoOrder: Array1=%v", strArray1)
 	TestLog.Logf("CompareStringArray_NoOrder: Array2=%v", strArray2)

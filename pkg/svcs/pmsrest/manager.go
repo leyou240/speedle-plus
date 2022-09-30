@@ -19,8 +19,8 @@ import (
 
 	"time"
 
-	"github.com/teramoby/speedle-plus/pkg/svcs"
 	log "github.com/sirupsen/logrus"
+	"github.com/teramoby/speedle-plus/pkg/svcs"
 )
 
 type RESTService struct {
@@ -36,9 +36,9 @@ func NewRestService(s pms.PolicyStoreManager) (*RESTService, error) {
 	return &RESTService{PolicyStore: s}, nil
 }
 
-// returns:
-//     1. ServiceName
-//     2. policy/role-policy ID
+// ParseRequestURI returns:
+//  1. ServiceName
+//  2. policy/role-policy ID
 func ParseRequestURI(r *http.Request) (string, string) {
 	segs := strings.Split(r.URL.Path, "/")
 	segLength := len(segs)
@@ -96,7 +96,7 @@ func getCreateMetaData(r *http.Request) map[string]string {
 	return createMetaData
 }
 
-// Service management
+// CreateService Service management
 func (mgr *RESTService) CreateService(w http.ResponseWriter, r *http.Request) {
 	var service pms.Service
 	err := decodeRequestBody(r, &service)
@@ -220,7 +220,7 @@ func (mgr *RESTService) ListPolicyAndRolePolicyCounts(w http.ResponseWriter, r *
 	httputils.SendOKResponse(w, countMap)
 }
 
-// Policy management
+// CreatePolicy Policy management
 func (mgr *RESTService) CreatePolicy(w http.ResponseWriter, r *http.Request) {
 	serviceName, _ := ParseRequestURI(r)
 	if len(serviceName) == 0 {
@@ -355,7 +355,7 @@ func (mgr *RESTService) ListPolicies(w http.ResponseWriter, r *http.Request) {
 	httputils.SendOKResponse(w, policies)
 }
 
-// Role policy management
+// CreateRolePolicy Role policy management
 func (mgr *RESTService) CreateRolePolicy(w http.ResponseWriter, r *http.Request) {
 	serviceName, _ := ParseRequestURI(r)
 	if len(serviceName) == 0 {

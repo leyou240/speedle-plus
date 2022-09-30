@@ -29,7 +29,7 @@ var builtinFunctions = map[string]govaluate.ExpressionFunction{
 }
 
 type TokenAsserter interface {
-	// set asserter func for policy evaluator
+	// SetAsserterFunc set asserter func for policy evaluator
 	SetAsserterFunc(f func(ctx *adsapi.RequestContext) error)
 	// AssertToken assert token and generate subject to represent the identity
 	AssertToken(ctx *adsapi.RequestContext) error
@@ -174,7 +174,7 @@ func (p *PolicyEvalImpl) populateContext(ctx *adsapi.RequestContext) (*internalR
 		Entities: []string{},
 	}
 	if ctx.Subject != nil {
-		groups := []interface{}{}
+		var groups []interface{}
 		var user, entity interface{}
 		for _, principal := range ctx.Subject.Principals {
 			encodedPrincipal := subjectutils.EncodePrincipal(principal)
@@ -267,7 +267,7 @@ func (p *PolicyEvalImpl) InternalIsAllowed(ctx *adsapi.RequestContext, evaluatio
 	return allowed, reason, nil
 }
 
-// Return all the policies related to a subject
+// Diagnose Return all the policies related to a subject
 func (p *PolicyEvalImpl) Diagnose(ctx adsapi.RequestContext) (*adsapi.EvaluationResult, error) {
 	// Construct the evaluation result
 	retCtx := ctx
@@ -300,7 +300,7 @@ func (p *PolicyEvalImpl) GetAllGrantedRoles(ctx adsapi.RequestContext) ([]string
 	return ret, err
 }
 
-// Limitations: This function only calculate granted permissions with resource, will not calculate granted permissions with resource expression.
+// GetAllGrantedPermissions Limitations: This function only calculate granted permissions with resource, will not calculate granted permissions with resource expression.
 func (p *PolicyEvalImpl) GetAllGrantedPermissions(ctx adsapi.RequestContext) ([]pms.Permission, error) {
 	p.RuntimePolicyStore.RLock()
 	defer p.RuntimePolicyStore.RUnlock()
@@ -499,7 +499,7 @@ func (p *PolicyEvalImpl) getGrantedRolesFromService(ctx *internalRequestContext,
 	}
 
 	for len(newlyGrantedRoles) != 0 {
-		newSubjectPrincipals := []string{}
+		var newSubjectPrincipals []string
 		for _, role := range newlyGrantedRoles {
 			newSubjectPrincipals = append(newSubjectPrincipals, convertRoleToPrincipal(role))
 		}
@@ -517,7 +517,7 @@ func (p *PolicyEvalImpl) getGrantedRolesFromService(ctx *internalRequestContext,
 		}
 	}
 
-	newSubjectPrincipals := []string{}
+	var newSubjectPrincipals []string
 	for role := range grantedRoleMap {
 		newSubjectPrincipals = append(newSubjectPrincipals, convertRoleToPrincipal(role))
 	}
@@ -537,7 +537,7 @@ func (p *PolicyEvalImpl) getGrantedRolesFromService(ctx *internalRequestContext,
 
 	for {
 		//find safely denied role
-		safelyDeniedRoles := []string{}
+		var safelyDeniedRoles []string
 		for deniedRole := range deniedRoleMap {
 			if couldRoleSafelyBeDenied(deniedRole, relatedRolesMap, deniedRoleMap) {
 				safelyDeniedRoles = append(safelyDeniedRoles, deniedRole)
@@ -562,7 +562,7 @@ func (p *PolicyEvalImpl) getGrantedRolesFromService(ctx *internalRequestContext,
 		}
 
 	}
-	finalGrantedRoles := []string{}
+	var finalGrantedRoles []string
 	for role := range grantedRoleMap {
 		finalGrantedRoles = append(finalGrantedRoles, role)
 	}
@@ -582,10 +582,10 @@ func printRelatedRoleMap(relatedRoleMap map[string]*Role) {
 func updateRelatedRoleMapWithGrantRolePolicy(rolePolicy *pms.RolePolicy, relatedRolesMap map[string]*Role,
 	subjectPrincipalMap map[string]bool, directDeniedRoleMap map[string]bool, grantedRoleMap map[string]bool) []string {
 
-	newlyGrantedRoles := []string{}
+	var newlyGrantedRoles []string
 
-	parentRoles := []string{}
-	parentPrincipals := []string{}
+	var parentRoles []string
+	var parentPrincipals []string
 
 	for _, principal := range rolePolicy.Principals {
 		if strings.HasPrefix(principal, "role:") {
@@ -653,8 +653,8 @@ func updateRelatedRoleMapWithDenyRolePolicy(rolePolicy *pms.RolePolicy, relatedR
 	subjectPrincipalMap map[string]bool, directDeniedRoleMap map[string]bool, grantedRoleMap map[string]bool,
 	deniedRoleMap map[string]bool) {
 
-	deniedByRoles := []string{}
-	deniedByPrincipals := []string{}
+	var deniedByRoles []string
+	var deniedByPrincipals []string
 
 	for _, principal := range rolePolicy.Principals {
 		if strings.HasPrefix(principal, "role:") {
@@ -788,7 +788,7 @@ func denyRoleAndDescendants(role string, relatedRoleMap map[string]*Role, grante
 }
 
 func getDeniableDescendantRoles(role string, relatedRoleMap map[string]*Role) []string {
-	descendants := []string{}
+	var descendants []string
 	if roleNode, ok := relatedRoleMap[role]; ok {
 		//get descendant nodes
 		for childrole := range roleNode.ChildRoles {
@@ -1006,11 +1006,11 @@ func (p *PolicyEvalImpl) syncRuntimeCache(dataSet []interface{}) error {
 		}
 		missed, removed := difFuncSets(custFuncSetInCache, CustFuncSetInDB)
 		for _, name := range missed {
-			function, err := policyStore.GetFunction(name)
+			f, err := policyStore.GetFunction(name)
 			if err != nil {
 				return err
 			} else {
-				p.AddFunctionInRuntimeCache(function)
+				p.AddFunctionInRuntimeCache(f)
 			}
 		}
 		for _, name := range removed {
@@ -1068,7 +1068,7 @@ func (p *PolicyEvalImpl) getRolePolicySetInCache() (map[int]string, []int, error
 }
 
 func (p *PolicyEvalImpl) getCustFunctionSetInCache() ([]string, error) {
-	resultSet := []string{}
+	var resultSet []string
 	for funcName := range p.RuntimePolicyStore.Functions {
 		if _, ok := builtinFunctions[funcName]; !ok {
 			resultSet = append(resultSet, funcName)

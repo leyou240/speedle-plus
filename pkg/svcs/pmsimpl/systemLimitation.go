@@ -20,9 +20,9 @@ var (
 
 /*
 Check the following items:
-	1. The maximum number of service;
-	2. The maximum number of Policy + RolePolicy;
-	3. The size of each Policy and RolePolicy;
+ 1. The maximum number of service;
+ 2. The maximum number of Policy + RolePolicy;
+ 3. The size of each Policy and RolePolicy;
 */
 func CheckService(service *pms.Service, policyStore pms.PolicyStoreManager) error {
 	// Check the number of the service
@@ -69,9 +69,9 @@ func CheckService(service *pms.Service, policyStore pms.PolicyStoreManager) erro
 
 /*
 Check the following items:
-	1. The maximum number of Policy + RolePolicy;
-	2. The size of the Policy;
-    3. If the effect field of policy is empty;
+ 1. The maximum number of Policy + RolePolicy;
+ 2. The size of the Policy;
+ 3. If the effect field of policy is empty;
 */
 func CheckPolicy(serviceName string, policy *pms.Policy, policyStore pms.PolicyStoreManager) error {
 	// Check global service
@@ -103,9 +103,9 @@ func CheckPolicy(serviceName string, policy *pms.Policy, policyStore pms.PolicyS
 
 /*
 Check the following items:
-	1. The maximum number of Policy + RolePolicy;
-	2. The size of the RolePolicy;
-    3. If the effect field of RolePolicy is empty;
+ 1. The maximum number of Policy + RolePolicy;
+ 2. The size of the RolePolicy;
+ 3. If the effect field of RolePolicy is empty;
 */
 func CheckRolePolicy(serviceName string, rolePolicy *pms.RolePolicy, policyStore pms.PolicyStoreManager) error {
 	if len(rolePolicy.Effect) <= 0 {
@@ -142,7 +142,7 @@ func getPolicyAndRolePolicyCount(serviceName string, policyStore pms.PolicyStore
 		return 0, err
 	}
 
-	return (policyCount + rolePolicyCount), nil
+	return policyCount + rolePolicyCount, nil
 }
 
 // check the size of policy or rolePolicy
@@ -160,7 +160,7 @@ func checkMaxSize(val interface{}, maxSize int64) (bool, error) {
 
 /*
 Check the following items:
-	1. The maximum number of function;
+ 1. The maximum number of function;
 */
 func CheckFunction(function *pms.Function, policyStore pms.PolicyStoreManager) error {
 	// Check the number of Policy + RolePolicy

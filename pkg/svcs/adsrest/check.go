@@ -16,8 +16,8 @@ import (
 	"github.com/teramoby/speedle-plus/pkg/httputils"
 	"github.com/teramoby/speedle-plus/pkg/logging"
 
-	"github.com/teramoby/speedle-plus/pkg/svcs"
 	log "github.com/sirupsen/logrus"
+	"github.com/teramoby/speedle-plus/pkg/svcs"
 )
 
 type JsonAttribute struct {
@@ -207,7 +207,7 @@ func ConvSingleValue(dataType string, value interface{}) (interface{}, error) {
 
 func ConvMultipleValues(dataType string, values interface{}) (interface{}, error) {
 	v := reflect.ValueOf(values)
-	ret := []interface{}{}
+	var ret []interface{}
 	var prevType string
 	for i := 0; i < v.Len(); i = i + 1 {
 		vi := v.Index(i)
@@ -259,7 +259,7 @@ func DumpPrincipals(principals []*JsonPrincipal) []*adsapi.Principal {
 	if principals == nil {
 		return nil
 	}
-	ret := []*adsapi.Principal{}
+	var ret []*adsapi.Principal
 	for _, princ := range principals {
 		ret = append(ret, &adsapi.Principal{
 			Type: princ.Type,

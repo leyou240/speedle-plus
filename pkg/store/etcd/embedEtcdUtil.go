@@ -15,7 +15,6 @@ import (
 )
 
 var embededStarted = false
-var isStartedByOtherProcess = false
 
 const embeddedEtcdPort = 2379
 
@@ -60,11 +59,11 @@ func StartEmbeddedEtcd(dataDir string) (etcd *embed.Etcd, etcdDir string, err er
 	return etcd, etcdDir, err
 }
 
-// CleanEmbedEtcd free the resource of embed etcd, and remove the tmp directory which is used to store data
+// CleanEmbeddedEtcd free the resource of embed etcd, and remove the tmp directory which is used to store data
 func CleanEmbeddedEtcd(etcd *embed.Etcd, etcdDir string) {
 	if embededStarted {
 		etcd.Close()
-		os.RemoveAll(etcdDir)
+		_ = os.RemoveAll(etcdDir)
 		embededStarted = false
 	}
 }
@@ -75,6 +74,6 @@ func isEtcdPortOccupied() bool {
 	if err != nil {
 		return true
 	}
-	ln.Close()
+	_ = ln.Close()
 	return false
 }

@@ -9,13 +9,13 @@ import (
 	"strings"
 
 	"github.com/gorilla/mux"
+	log "github.com/sirupsen/logrus"
 	"github.com/teramoby/speedle-plus/api/ads"
 	"github.com/teramoby/speedle-plus/api/pms"
 	"github.com/teramoby/speedle-plus/pkg/errors"
 	"github.com/teramoby/speedle-plus/pkg/httputils"
 	"github.com/teramoby/speedle-plus/pkg/logging"
 	"github.com/teramoby/speedle-plus/pkg/store"
-	log "github.com/sirupsen/logrus"
 )
 
 type GetDiscoverRequestsResponse struct {
@@ -252,7 +252,7 @@ func (e *RESTService) GetDiscoverPolicies(w http.ResponseWriter, r *http.Request
 		logging.WriteFailedAuditLog("GetDiscoverPolicies", ctxFields, err.Error())
 		return
 	}
-	services := []*pms.Service{}
+	var services []*pms.Service
 	for _, value := range serviceMap {
 		services = append(services, value)
 	}

@@ -114,7 +114,7 @@ func getEffect(cmd string) (string, int, error) {
 }
 
 func getRolePolicyPrincipals(cmd string, i int) ([]string, int, error) {
-	ret := []string{}
+	var ret []string
 	onePrincipal, i, err := getPrincipal(cmd, i)
 	if err != nil {
 		return nil, -1, err
@@ -141,7 +141,7 @@ func getRolePolicyPrincipals(cmd string, i int) ([]string, int, error) {
 }
 
 func getOrPrincipals(cmd string, i int) ([][]string, int, error) {
-	ret := [][]string{}
+	var ret [][]string
 	andPrincipals, i, err := getAndPrincipals(cmd, i)
 	if err != nil {
 		return nil, -1, err
@@ -190,7 +190,7 @@ func getAndPrincipals(cmd string, i int) ([]string, int, error) {
 		return nil, -1, getError("Unexpected EOF found", cmd, i)
 	}
 
-	principals := []string{}
+	var principals []string
 	// End of and principals
 	var principal string
 	var err error
@@ -279,7 +279,7 @@ func getPrincipal(cmd string, i int) (string, int, error) {
 }
 
 func getRoles(cmd string, i int) ([]string, int, error) {
-	tokens := []string{}
+	var tokens []string
 	t, i := getToken(cmd, i)
 	if strings.EqualFold("role", t) {
 		t, i = getToken(cmd, i)
@@ -305,7 +305,7 @@ func getRoles(cmd string, i int) ([]string, int, error) {
 }
 
 func getPermissions(cmd string, i int) ([]*pms.Permission, int, error) {
-	perms := []*pms.Permission{}
+	var perms []*pms.Permission
 	p, i, err := getPermission(cmd, i)
 	if err != nil {
 		return nil, -1, err
@@ -415,7 +415,7 @@ func getCondition(cmd string, i int) (string, int, error) {
 }
 
 func getTokens(cmd string, i int, e string) ([]string, int, error) {
-	tokens := []string{}
+	var tokens []string
 	t, i := getToken(cmd, i)
 	if t == "" {
 		return tokens, i, nil

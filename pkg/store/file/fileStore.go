@@ -15,8 +15,8 @@ import (
 	"github.com/teramoby/speedle-plus/pkg/suid"
 
 	"github.com/fsnotify/fsnotify"
-	"github.com/teramoby/speedle-plus/api/pms"
 	log "github.com/sirupsen/logrus"
+	"github.com/teramoby/speedle-plus/api/pms"
 )
 
 type Store struct {
@@ -71,7 +71,9 @@ func (s *Store) WritePolicyStore(ps *pms.PolicyStore) error {
 
 func (s *Store) writePolicyStoreWithoutLock(ps *pms.PolicyStore) error {
 	jsonFile, err := os.Create(s.FileLocation)
-	defer jsonFile.Close()
+	defer func(jsonFile *os.File) {
+		_ = jsonFile.Close()
+	}(jsonFile)
 	if err != nil {
 		return errors.Wrapf(err, errors.StoreError, "unable to create file %q", s.FileLocation)
 	}
@@ -378,7 +380,7 @@ func (s *Store) Type() string {
 	return StoreType
 }
 
-// For policy manager
+// ListAllPolicies For policy manager
 func (s *Store) ListAllPolicies(serviceName string, filter string) ([]*pms.Policy, error) {
 
 	s.rwLock.RLock()
@@ -389,7 +391,7 @@ func (s *Store) ListAllPolicies(serviceName string, filter string) ([]*pms.Polic
 	if err != nil {
 		return nil, err
 	}
-	ret := []*pms.Policy{}
+	var ret []*pms.Policy
 	for _, policy := range service.Policies {
 		isExpected := true
 		if f != nil {
@@ -520,7 +522,7 @@ func (s *Store) CreatePolicy(serviceName string, policy *pms.Policy) (*pms.Polic
 	return &dupPolicy, nil
 }
 
-// For role policy manager
+// ListAllRolePolicies For role policy manager
 func (s *Store) ListAllRolePolicies(serviceName string, filter string) ([]*pms.RolePolicy, error) {
 
 	s.rwLock.RLock()
@@ -531,7 +533,7 @@ func (s *Store) ListAllRolePolicies(serviceName string, filter string) ([]*pms.R
 	if err != nil {
 		return nil, err
 	}
-	ret := []*pms.RolePolicy{}
+	var ret []*pms.RolePolicy
 	for _, rolePolicy := range service.RolePolicies {
 		isExpected := true
 		if f != nil {
@@ -747,7 +749,7 @@ func (s *Store) ListAllFunctions(filter string) ([]*pms.Function, error) {
 	if err != nil {
 		return nil, err
 	}
-	ret := []*pms.Function{}
+	var ret []*pms.Function
 	for _, value := range ps.Functions {
 		isExpected := true
 		if f != nil {

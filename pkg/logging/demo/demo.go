@@ -6,10 +6,10 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"os"
 
-	logging "github.com/teramoby/speedle-plus/pkg/logging"
 	log "github.com/sirupsen/logrus"
+	logging "github.com/teramoby/speedle-plus/pkg/logging"
 )
 
 type Config struct {
@@ -70,7 +70,7 @@ func main() {
 }
 
 func initLog() error {
-	raw, err := ioutil.ReadFile("./config.json")
+	raw, err := os.ReadFile("./config.json")
 	if err != nil {
 		return fmt.Errorf("Failed to load the config file, err: %v. \n", err)
 	}

@@ -1,5 +1,5 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
+// Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
+// Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 package assertion
 
 import (
@@ -32,12 +32,10 @@ func TestAssertion(t *testing.T) {
 
 	if len(ar.Principals) != 1 {
 		t.Fatalf("One principals should be returned but returned %d principals.\n", len(ar.Principals))
-		t.FailNow()
 	}
 
 	if ar.Principals[0].Name != "testUser" || ar.Principals[0].Type != adsapi.PRINCIPAL_TYPE_USER {
 		t.Fatalf("returned user should be testUser, actually returned %v .\n", ar.Principals[0])
-		t.FailNow()
 	}
 
 	// no token
@@ -45,7 +43,6 @@ func TestAssertion(t *testing.T) {
 	t.Logf("auth result: %v, err: %v", ar, errAssert)
 	if errAssert == nil {
 		t.Fatalf("should failed with error")
-		t.FailNow()
 	}
 
 	// invalid token
@@ -53,11 +50,9 @@ func TestAssertion(t *testing.T) {
 	t.Logf("auth result: %v, err: %v", ar, errAssert)
 	if errAssert == nil {
 		t.Fatalf("should failed with error")
-		t.FailNow()
 	}
 	if !strings.Contains(errAssert.Error(), strconv.Itoa(http.StatusBadRequest)) {
 		t.Fatalf("should failed with error code: %d, actually failed with error code: %s.\n", http.StatusBadRequest, errAssert.Error())
-		t.FailNow()
 	}
 
 }

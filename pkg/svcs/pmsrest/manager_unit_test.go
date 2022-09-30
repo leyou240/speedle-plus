@@ -1,9 +1,10 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
+// Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
+// Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 package pmsrest
 
 import (
 	"bytes"
+	"io"
 	"net/http"
 	"net/http/httptest"
 
@@ -13,8 +14,6 @@ import (
 	"time"
 
 	"encoding/json"
-	"io/ioutil"
-
 	"log"
 
 	pmsapi "github.com/teramoby/speedle-plus/api/pms"
@@ -75,7 +74,7 @@ func TestMain(m *testing.M) {
 }
 
 func testMain(m *testing.M) int {
-	err := ioutil.WriteFile(storeFile, []byte(`{"services":[{"name":"fakeservice","type":"app"}]}`), 0644)
+	err := os.WriteFile(storeFile, []byte(`{"services":[{"name":"fakeservice","type":"app"}]}`), 0644)
 	if err != nil {
 		log.Fatal(err)
 		return 1
@@ -125,7 +124,7 @@ func TestCreateServicePrincipalHeader(t *testing.T) {
 	}
 	if resp.StatusCode == http.StatusCreated {
 		serviceGot := pmsapi.Service{}
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			t.Fatal("failed to read create service response.")
 		}
@@ -169,7 +168,7 @@ func TestCreatePolicyPrincipalHeader(t *testing.T) {
 	}
 	if resp.StatusCode == http.StatusCreated {
 		policyGot := pmsapi.Policy{}
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			t.Fatal("failed to read response.")
 		}
@@ -208,7 +207,7 @@ func TestCreateRolePolicyPrincipalHeader(t *testing.T) {
 	}
 	if resp.StatusCode == http.StatusCreated {
 		policyGot := pmsapi.RolePolicy{}
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			t.Fatal("failed to read response.")
 		}
@@ -243,7 +242,7 @@ func TestCreateFunctionPrincipalHeader(t *testing.T) {
 	}
 	if resp.StatusCode == http.StatusCreated {
 		funcGot := pmsapi.Function{}
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			t.Fatal("failed to read response.")
 		}

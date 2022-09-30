@@ -8,7 +8,7 @@ import (
 	"os/exec"
 )
 
-//Class for exec.Cmd, standard output & error message & execute error
+// Cmd Class for exec.Cmd, standard output & error message & execute error
 type Cmd struct {
 	cmd      *exec.Cmd
 	stdout   string
@@ -16,7 +16,7 @@ type Cmd struct {
 	runError error
 }
 
-// Constructor for Cmd class
+// Command Constructor for Cmd class
 func Command(name string, arg ...string) *Cmd {
 	return &Cmd{
 		cmd: exec.Command(name, arg...),
@@ -25,7 +25,7 @@ func Command(name string, arg ...string) *Cmd {
 
 var cmdInstance = &Cmd{}
 
-// execute the command.
+// Run execute the command.
 func (c *Cmd) Run() {
 
 	var outBuf bytes.Buffer
@@ -42,18 +42,18 @@ func (c *Cmd) Run() {
 	c.stderr = string(errBuf.Bytes())
 }
 
-// Get the Stdout of exec.Cmd
+// Stdout Get the Stdout of exec.Cmd
 func (c *Cmd) Stdout() string {
 
 	return c.stdout
 }
 
-// Gget the Stderr of exec.Cmd
+// Stderr Gget the Stderr of exec.Cmd
 func (c *Cmd) Stderr() string {
 	return c.stderr
 }
 
-// Return true if command run successfully
+// Success Return true if command run successfully
 // Otherwise, return false
 func (c *Cmd) Success() bool {
 	return c.runError == nil

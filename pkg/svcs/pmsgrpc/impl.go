@@ -77,7 +77,7 @@ func convertRPCServiceRequest(rpcService *pb.ServiceRequest) *pms.Service {
 }
 
 func convertRPCPrincipals(principals []*pb.AndPrincipals) [][]string {
-	ret := [][]string{}
+	var ret [][]string
 	for _, andPrincipals := range principals {
 		ret = append(ret, andPrincipals.Principals)
 	}
@@ -166,7 +166,7 @@ func convertMetaService(service *pms.Service) *pb.Service {
 }
 
 func convertMetaPrincipals(principals [][]string) []*pb.AndPrincipals {
-	ret := []*pb.AndPrincipals{}
+	var ret []*pb.AndPrincipals
 	for _, andPrincipals := range principals {
 		ret = append(ret, &pb.AndPrincipals{
 			Principals: andPrincipals,
@@ -269,7 +269,7 @@ func (impl *serviceImpl) CreateFunction(ctx context.Context, in *pb.Function) (*
 }
 
 func (impl *serviceImpl) QueryFunctions(ctx context.Context, in *pb.FunctionQueryRequest) (*pb.FunctionQueryResponse, error) {
-	var functions = []*pms.Function{}
+	var functions []*pms.Function
 	// Audit contextual fields for request
 	ctxFields := map[string]interface{}{
 		"name":    in.Name,
@@ -477,7 +477,7 @@ func (impl *serviceImpl) QueryPolicies(ctx context.Context, in *pb.PolicyQueryRe
 		"policyId":    in.PolicyID,
 	}
 
-	var policies = []*pms.Policy{}
+	var policies []*pms.Policy
 	if len(in.PolicyID) == 0 {
 		if len(in.Filters) != 0 && strings.HasPrefix(in.Filters, "name") { //Query by name
 			policiesMatched, err := impl.policyStore.ListAllPolicies(in.ServiceName, in.Filters)
@@ -600,7 +600,7 @@ func (impl *serviceImpl) QueryRolePolicies(ctx context.Context, in *pb.RolePolic
 		"rolePolicyId": in.RolePolicyID,
 	}
 
-	var policies = []*pms.RolePolicy{}
+	var policies []*pms.RolePolicy
 	if len(in.RolePolicyID) == 0 {
 		if len(in.Filters) != 0 && strings.HasPrefix(in.Filters, "name") { //Query by name
 			policiesMatched, err := impl.policyStore.ListAllRolePolicies(in.ServiceName, in.Filters)
@@ -709,7 +709,7 @@ func (impl *serviceImpl) GetDiscoverRequests(ctx context.Context, in *pb.Discove
 		"revision":   revision,
 	}
 
-	requests := []*pb.ContextRequest{}
+	var requests []*pb.ContextRequest
 	if last {
 		req, revision, err := discoverRequestMgr.GetLastDiscoverRequest(serviceName)
 		if err != nil {
@@ -787,7 +787,7 @@ func (impl *serviceImpl) GetDiscoverPolicies(ctx context.Context, in *pb.Discove
 		logging.WriteFailedAuditLog("GetDiscoverPolicies", ctxFields, err.Error())
 		return nil, toGRPCStatus(err)
 	}
-	services := []*pb.Service{}
+	var services []*pb.Service
 	for _, service := range serviceMap {
 		services = append(services, convertMetaService(service))
 	}
@@ -805,7 +805,7 @@ func convertAPIPrincipals(principals []*ads.Principal) []*pb.Principal {
 		return nil
 	}
 
-	ret := []*pb.Principal{}
+	var ret []*pb.Principal
 	for _, princ := range principals {
 		ret = append(ret, &pb.Principal{
 			Type: princ.Type,

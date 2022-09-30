@@ -1,5 +1,3 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 package ads
 
 import (
@@ -44,7 +42,7 @@ func (p *EvaluationResult) AddPolicies(grantedPolicies []*pms.Policy, deniedPoli
 	}
 }
 
-// 	This function needs to be updated once the "Strategy" is removed from Policy
+// This function needs to be updated once the "Strategy" is removed from Policy
 func convertMetaPolicy2ApiEvaluatedPolicy(metaPolicy *pms.Policy, apiPolicy *EvaluatedPolicy, policyStatus string, evaluationResult string) {
 	if metaPolicy == nil || apiPolicy == nil {
 		// It shouldn't happen
@@ -75,7 +73,7 @@ func convertMetaPolicy2ApiEvaluatedPolicy(metaPolicy *pms.Policy, apiPolicy *Eva
 	}
 }
 
-// 	This function needs to be updated once the "Strategy" is removed from RolePolicy
+// This function needs to be updated once the "Strategy" is removed from RolePolicy
 func convertMetaRolePolicy2ApiEvaluatedRolePolicy(metaRolePolicy *pms.RolePolicy, apiRolePolicy *EvaluatedRolePolicy, evaluationResult bool) {
 	if metaRolePolicy == nil || apiRolePolicy == nil {
 		// It shouldn't happen

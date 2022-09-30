@@ -12,8 +12,8 @@ import (
 )
 
 var (
-	storeBuildersMu *sync.RWMutex = &sync.RWMutex{}
-	storeBuilders                 = make(map[string]StoreBuilder)
+	storeBuildersMu = &sync.RWMutex{}
+	storeBuilders   = make(map[string]StoreBuilder)
 )
 
 type StoreBuilder interface {
@@ -55,7 +55,7 @@ func StoreBuilders() []string {
 	return list
 }
 
-//The return map expect param's command line flag name as key, and storeProps key in config file as value
+// The return map expect param's command line flag name as key, and storeProps key in config file as value
 func GetAllStoreParams() map[string]string {
 	storeBuildersMu.RLock()
 	defer storeBuildersMu.RUnlock()

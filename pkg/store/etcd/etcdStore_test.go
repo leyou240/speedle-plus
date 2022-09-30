@@ -36,14 +36,14 @@ func testMain(m *testing.M) int {
 }
 
 func TestWriteReadPolicyStore(t *testing.T) {
-	store, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
+	etcdStore, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
 	if err != nil {
-		t.Fatal("fail to new etcd3 store:", err)
+		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer store.(*Store).destroy()
+	defer etcdStore.(*Store).destroy()
 
-	if psOrigin, err := store.ReadPolicyStore(); err != nil {
-		t.Fatal("fail to read etcd3 store:", err)
+	if psOrigin, err := etcdStore.ReadPolicyStore(); err != nil {
+		t.Fatal("fail to read etcd3 etcdStore:", err)
 	} else {
 		t.Log("existing number of apps:", len(psOrigin.Services))
 	}
@@ -53,17 +53,17 @@ func TestWriteReadPolicyStore(t *testing.T) {
 		service := pms.Service{Name: fmt.Sprintf("app%d", i), Type: pms.TypeApplication}
 		ps.Services = append(ps.Services, &service)
 	}
-	err = store.WritePolicyStore(&ps)
+	err = etcdStore.WritePolicyStore(&ps)
 	if err != nil {
-		t.Fatal("fail to write policy store:", err)
+		t.Fatal("fail to write policy etcdStore:", err)
 	}
 	var psr *pms.PolicyStore
-	psr, err = store.ReadPolicyStore()
+	psr, err = etcdStore.ReadPolicyStore()
 	if err != nil {
-		t.Fatal("fail to read policy store:", err)
+		t.Fatal("fail to read policy etcdStore:", err)
 	}
 	if 10 != len(psr.Services) {
-		t.Error("should have 10 applications in the store")
+		t.Error("should have 10 applications in the etcdStore")
 	}
 	for _, app := range psr.Services {
 		t.Log(app.Name, " ")
@@ -71,13 +71,13 @@ func TestWriteReadPolicyStore(t *testing.T) {
 }
 
 func TestWriteReadDeleteService(t *testing.T) {
-	store, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
+	etcdStore, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
 	if err != nil {
-		t.Fatal("fail to new etcd3 store:", err)
+		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer store.(*Store).destroy()
+	defer etcdStore.(*Store).destroy()
 	//clean the service firstly
-	err = store.DeleteService("service1")
+	err = etcdStore.DeleteService("service1")
 	t.Log("deleteing service1, err:", err)
 
 	app := pms.Service{Name: "service1", Type: pms.TypeApplication}
@@ -107,12 +107,12 @@ func TestWriteReadDeleteService(t *testing.T) {
 		app.Policies = append(app.Policies, &policy)
 		i++
 	}
-	err = store.CreateService(&app)
+	err = etcdStore.CreateService(&app)
 	if err != nil {
 		t.Log("fail to create application:", err)
 		t.FailNow()
 	}
-	appr, errr := store.GetService("service1")
+	appr, errr := etcdStore.GetService("service1")
 	if errr != nil {
 		t.Log("fail to get application:", err)
 		t.FailNow()
@@ -133,18 +133,18 @@ func TestWriteReadDeleteService(t *testing.T) {
 		t.Log("policy number should be ", num)
 		t.FailNow()
 	}
-	err = store.DeleteService("service1")
+	err = etcdStore.DeleteService("service1")
 	if err != nil {
 		t.Log("fail to delete application:", err)
 		t.FailNow()
 	}
-	appr, err = store.GetService("service1")
+	appr, err = etcdStore.GetService("service1")
 	t.Log("get non exist service:", err)
 	if err == nil {
 		t.Log("should fail as app is already deleted")
 		t.FailNow()
 	}
-	err = store.DeleteService("nonexist-service")
+	err = etcdStore.DeleteService("nonexist-service")
 	t.Log("delete non exist service:", err)
 	if err == nil {
 		t.Log("should fail as the service does not exist")
@@ -153,14 +153,14 @@ func TestWriteReadDeleteService(t *testing.T) {
 }
 
 func TestEtcdStore_GetPolicyByName(t *testing.T) {
-	store, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
+	etcdStore, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
 	if err != nil {
-		t.Fatal("fail to new etcd3 store:", err)
+		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer store.(*Store).destroy()
+	defer etcdStore.(*Store).destroy()
 	//clean the service firstly
 	serviceName := "service1"
-	err = store.DeleteService(serviceName)
+	err = etcdStore.DeleteService(serviceName)
 	t.Log("deleteing service1, err:", err)
 
 	app := pms.Service{Name: serviceName, Type: pms.TypeApplication}
@@ -204,19 +204,19 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 	}
 	app.Policies = append(app.Policies, &duplicateNamePolicy)
 
-	err = store.CreateService(&app)
+	err = etcdStore.CreateService(&app)
 	if err != nil {
 		t.Log("fail to create application:", err)
 		t.FailNow()
 	}
-	service, errr := store.GetService(serviceName)
+	service, errr := etcdStore.GetService(serviceName)
 	if errr != nil {
 		t.Log("fail to get application:", err)
 		t.FailNow()
 	}
 	poilcyName := "policy0"
 
-	policyArrListed, err := store.ListAllPolicies(service.Name, "name eq "+poilcyName)
+	policyArrListed, err := etcdStore.ListAllPolicies(service.Name, "name eq "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -225,7 +225,7 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllPolicies(service.Name, "name co "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllPolicies(service.Name, "name co "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -233,7 +233,7 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllPolicies(service.Name, "name sw "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllPolicies(service.Name, "name sw "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -241,7 +241,7 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllPolicies(service.Name, "name gt "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllPolicies(service.Name, "name gt "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -249,7 +249,7 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllPolicies(service.Name, "name ge "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllPolicies(service.Name, "name ge "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -257,7 +257,7 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllPolicies(service.Name, "name lt "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllPolicies(service.Name, "name lt "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -265,7 +265,7 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllPolicies(service.Name, "name le "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllPolicies(service.Name, "name le "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -273,7 +273,7 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllPolicies(service.Name, "name le ''")
+	policyArrListed, err = etcdStore.ListAllPolicies(service.Name, "name le ''")
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -281,7 +281,7 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllPolicies(service.Name, "name pr")
+	policyArrListed, err = etcdStore.ListAllPolicies(service.Name, "name pr")
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -292,14 +292,14 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 }
 
 func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
-	store, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
+	etcdStore, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
 	if err != nil {
-		t.Fatal("fail to new etcd3 store:", err)
+		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer store.(*Store).destroy()
+	defer etcdStore.(*Store).destroy()
 	//clean the service firstly
 	serviceName := "service1"
-	err = store.DeleteService(serviceName)
+	err = etcdStore.DeleteService(serviceName)
 	t.Log("deleteing service1, err:", err)
 
 	app := pms.Service{Name: serviceName, Type: pms.TypeApplication}
@@ -329,19 +329,19 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 	}
 	app.RolePolicies = append(app.RolePolicies, &duplicateNameRolePolicy)
 
-	err = store.CreateService(&app)
+	err = etcdStore.CreateService(&app)
 	if err != nil {
 		t.Log("fail to create application:", err)
 		t.FailNow()
 	}
-	service, errr := store.GetService(serviceName)
+	service, errr := etcdStore.GetService(serviceName)
 	if errr != nil {
 		t.Log("fail to get application:", err)
 		t.FailNow()
 	}
 	poilcyName := "rp0"
 
-	policyArrListed, err := store.ListAllRolePolicies(service.Name, "name eq "+poilcyName)
+	policyArrListed, err := etcdStore.ListAllRolePolicies(service.Name, "name eq "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -350,7 +350,7 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllRolePolicies(service.Name, "name co "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllRolePolicies(service.Name, "name co "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -358,7 +358,7 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllRolePolicies(service.Name, "name sw "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllRolePolicies(service.Name, "name sw "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -366,7 +366,7 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllRolePolicies(service.Name, "name gt "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllRolePolicies(service.Name, "name gt "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -374,7 +374,7 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllRolePolicies(service.Name, "name ge "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllRolePolicies(service.Name, "name ge "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -382,7 +382,7 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllRolePolicies(service.Name, "name lt "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllRolePolicies(service.Name, "name lt "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -390,7 +390,7 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllRolePolicies(service.Name, "name le "+poilcyName)
+	policyArrListed, err = etcdStore.ListAllRolePolicies(service.Name, "name le "+poilcyName)
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -398,7 +398,7 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllRolePolicies(service.Name, "name le ''")
+	policyArrListed, err = etcdStore.ListAllRolePolicies(service.Name, "name le ''")
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -406,7 +406,7 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 		t.Fatal("get poilcy by name didn't get expected policies! ")
 	}
 
-	policyArrListed, err = store.ListAllRolePolicies(service.Name, "name pr")
+	policyArrListed, err = etcdStore.ListAllRolePolicies(service.Name, "name pr")
 	if err != nil {
 		t.Fatal("Failed to list polices for service:", service.Name, err)
 	}
@@ -417,15 +417,15 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 }
 
 func TestManagePolicies(t *testing.T) {
-	store, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
+	etcdStore, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
 	if err != nil {
-		t.Fatal("fail to new etcd3 store:", err)
+		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer store.(*Store).destroy()
+	defer etcdStore.(*Store).destroy()
 	//clean the service firstly
-	store.DeleteService("service1")
+	etcdStore.DeleteService("service1")
 	app := pms.Service{Name: "service1", Type: pms.TypeApplication}
-	err = store.CreateService(&app)
+	err = etcdStore.CreateService(&app)
 	if err != nil {
 		t.Fatal("fail to create application:", err)
 	}
@@ -439,17 +439,17 @@ func TestManagePolicies(t *testing.T) {
 		},
 	}
 	policy.Principals = [][]string{{"user:Alice"}}
-	policyR, err := store.CreatePolicy("service1", &policy)
+	policyR, err := etcdStore.CreatePolicy("service1", &policy)
 	if err != nil {
 		t.Fatal("fail to create policy:", err)
 	}
-	policyR1, err := store.GetPolicy("service1", policyR.ID)
+	policyR1, err := etcdStore.GetPolicy("service1", policyR.ID)
 	t.Log(policyR1)
 	if err != nil {
 		t.Fatal("fail to get policy:", err)
 	}
 
-	policies, err := store.ListAllPolicies("service1", "")
+	policies, err := etcdStore.ListAllPolicies("service1", "")
 	if err != nil {
 		t.Fatal("fail to list policies:", err)
 	}
@@ -457,35 +457,35 @@ func TestManagePolicies(t *testing.T) {
 		t.Fatal("should have 1 policy")
 	}
 
-	_, err = store.GetPolicy("service1", "nonexistID")
+	_, err = etcdStore.GetPolicy("service1", "nonexistID")
 	t.Log(err)
 	if err == nil {
 		t.Fatal("should fail to get policy")
 	}
 
-	err = store.DeletePolicy("service1", "nonexistID")
+	err = etcdStore.DeletePolicy("service1", "nonexistID")
 	t.Log(err)
 	if err == nil {
 		t.Fatal("should fail to delete policy")
 	}
 
-	err = store.DeletePolicy("service1", policyR.ID)
+	err = etcdStore.DeletePolicy("service1", policyR.ID)
 	if err != nil {
 		t.Fatal("fail to delete policy:", err)
 	}
 }
 
 func TestManageRolePolicies(t *testing.T) {
-	store, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
+	etcdStore, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
 	if err != nil {
-		t.Fatal("fail to new etcd3 store:", err)
+		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer store.(*Store).destroy()
+	defer etcdStore.(*Store).destroy()
 
 	//clean the service firstly
-	store.DeleteService("service1")
+	etcdStore.DeleteService("service1")
 	app := pms.Service{Name: "service1", Type: pms.TypeApplication}
-	err = store.CreateService(&app)
+	err = etcdStore.CreateService(&app)
 	if err != nil {
 		t.Fatal("fail to create application:", err)
 	}
@@ -495,17 +495,17 @@ func TestManageRolePolicies(t *testing.T) {
 	rolePolicy.Roles = []string{"role1"}
 	rolePolicy.Principals = []string{"user:Alice"}
 
-	policyR, err := store.CreateRolePolicy("service1", &rolePolicy)
+	policyR, err := etcdStore.CreateRolePolicy("service1", &rolePolicy)
 	if err != nil {
 		t.Fatal("fail to create role policy:", err)
 	}
-	policyR1, err := store.GetRolePolicy("service1", policyR.ID)
+	policyR1, err := etcdStore.GetRolePolicy("service1", policyR.ID)
 	t.Log(policyR1)
 	if err != nil {
 		t.Fatal("fail to get role policy:", err)
 	}
 
-	rolePolicies, err := store.ListAllRolePolicies("service1", "")
+	rolePolicies, err := etcdStore.ListAllRolePolicies("service1", "")
 	if err != nil {
 		t.Fatal("fail to list role policies:", err)
 	}
@@ -513,42 +513,42 @@ func TestManageRolePolicies(t *testing.T) {
 		t.Fatal("should have 1 role policy")
 	}
 
-	_, err = store.GetRolePolicy("service1", "nonexistID")
+	_, err = etcdStore.GetRolePolicy("service1", "nonexistID")
 	t.Log(err)
 	if err == nil {
 		t.Fatal("should fail to get role policy")
 	}
 
-	err = store.DeleteRolePolicy("service1", "nonexistID")
+	err = etcdStore.DeleteRolePolicy("service1", "nonexistID")
 	t.Log(err)
 	if err == nil {
 		t.Fatal("should fail to delete role policy")
 	}
 
-	err = store.DeleteRolePolicy("service1", policyR.ID)
+	err = etcdStore.DeleteRolePolicy("service1", policyR.ID)
 	if err != nil {
 		t.Fatal("fail to delete role policy:", err)
 	}
 }
 
 func TestCheckItemsCount(t *testing.T) {
-	store, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
+	etcdStore, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
 	if err != nil {
-		t.Fatal("fail to new etcd3 store:", err)
+		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer store.(*Store).destroy()
+	defer etcdStore.(*Store).destroy()
 
 	// clean the services
-	store.DeleteServices()
+	etcdStore.DeleteServices()
 
 	// Create service1
 	app1 := pms.Service{Name: "service1", Type: pms.TypeApplication}
-	err = store.CreateService(&app1)
+	err = etcdStore.CreateService(&app1)
 	if err != nil {
 		t.Fatal("fail to create service:", err)
 	}
 	// Check service count
-	serviceCount, err := store.GetServiceCount()
+	serviceCount, err := etcdStore.GetServiceCount()
 	if err != nil {
 		t.Fatal("Failed to get service count:", err)
 	}
@@ -563,13 +563,13 @@ func TestCheckItemsCount(t *testing.T) {
 		{Name: "p03", Effect: "grant", Principals: [][]string{{"user:user3"}}},
 	}
 	for _, policy := range policies {
-		_, err := store.CreatePolicy("service1", &policy)
+		_, err := etcdStore.CreatePolicy("service1", &policy)
 		if err != nil {
 			t.Fatal("fail to create policy:", err)
 		}
 	}
 	// Check policy count
-	policyCount, err := store.GetPolicyCount("service1")
+	policyCount, err := etcdStore.GetPolicyCount("service1")
 	if err != nil {
 		t.Fatal("Failed to get the policy count: ", err)
 	}
@@ -583,13 +583,13 @@ func TestCheckItemsCount(t *testing.T) {
 		{Name: "p02", Effect: "grant", Principals: []string{"user:user2"}, Roles: []string{"role2"}},
 	}
 	for _, rolePolicy := range rolePolicies {
-		_, err := store.CreateRolePolicy("service1", &rolePolicy)
+		_, err := etcdStore.CreateRolePolicy("service1", &rolePolicy)
 		if err != nil {
 			t.Fatal("Failed to get role policy count:", err)
 		}
 	}
 	// Check role Policy count
-	rolePolicyCount, err := store.GetRolePolicyCount("service1")
+	rolePolicyCount, err := etcdStore.GetRolePolicyCount("service1")
 	if err != nil {
 		t.Fatal("Failed to get the role policy count")
 	}
@@ -599,12 +599,12 @@ func TestCheckItemsCount(t *testing.T) {
 
 	// Create service2
 	app2 := pms.Service{Name: "service2", Type: pms.TypeApplication}
-	err = store.CreateService(&app2)
+	err = etcdStore.CreateService(&app2)
 	if err != nil {
 		t.Fatal("fail to create service:", err)
 	}
 	// Check service count
-	serviceCount, err = store.GetServiceCount()
+	serviceCount, err = etcdStore.GetServiceCount()
 	if err != nil {
 		t.Fatal("Failed to get service count:", err)
 	}
@@ -614,13 +614,13 @@ func TestCheckItemsCount(t *testing.T) {
 
 	// Create policies in service2
 	for _, policy := range policies {
-		_, err := store.CreatePolicy("service2", &policy)
+		_, err := etcdStore.CreatePolicy("service2", &policy)
 		if err != nil {
 			t.Fatal("fail to create policy:", err)
 		}
 	}
 	// Check policy count in service2
-	policyCount, err = store.GetPolicyCount("service2")
+	policyCount, err = etcdStore.GetPolicyCount("service2")
 	if err != nil {
 		t.Fatal("Failed to get the policy count: ", err)
 	}
@@ -628,7 +628,7 @@ func TestCheckItemsCount(t *testing.T) {
 		t.Fatalf("Policy count doesn't match, expected:%d, actual:%d", len(policies), policyCount)
 	}
 	// Check policy count in both service1 and service2
-	policyCount, err = store.GetPolicyCount("")
+	policyCount, err = etcdStore.GetPolicyCount("")
 	if err != nil {
 		t.Fatal("Failed to get the policy count: ", err)
 	}
@@ -638,13 +638,13 @@ func TestCheckItemsCount(t *testing.T) {
 
 	// Create rolePolicy in service2
 	for _, rolePolicy := range rolePolicies {
-		_, err := store.CreateRolePolicy("service2", &rolePolicy)
+		_, err := etcdStore.CreateRolePolicy("service2", &rolePolicy)
 		if err != nil {
 			t.Fatal("Failed to get role policy count:", err)
 		}
 	}
 	// Check role Policy count in service2
-	rolePolicyCount, err = store.GetRolePolicyCount("service2")
+	rolePolicyCount, err = etcdStore.GetRolePolicyCount("service2")
 	if err != nil {
 		t.Fatal("Failed to get the role policy count")
 	}
@@ -652,7 +652,7 @@ func TestCheckItemsCount(t *testing.T) {
 		t.Fatalf("RolePolicy count doesn't match, expected:%d, actual:%d", len(rolePolicies), rolePolicyCount)
 	}
 	// Check role Policy count in both service1 and service2
-	rolePolicyCount, err = store.GetRolePolicyCount("")
+	rolePolicyCount, err = etcdStore.GetRolePolicyCount("")
 	if err != nil {
 		t.Fatal("Failed to get the role policy count")
 	}
@@ -662,14 +662,14 @@ func TestCheckItemsCount(t *testing.T) {
 }
 
 func TestWatch(t *testing.T) {
-	store, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
-	defer store.StopWatch()
-	defer store.(*Store).destroy()
+	etcdStore, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
+	defer etcdStore.StopWatch()
+	defer etcdStore.(*Store).destroy()
 	if err != nil {
-		t.Fatal("fail to new etcd3 store:", err)
+		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
 
-	ch, err := store.Watch()
+	ch, err := etcdStore.Watch()
 	if err != nil {
 		t.Fatal("fail to watch:", err)
 	}
@@ -683,7 +683,7 @@ func TestWatch(t *testing.T) {
 		Type:         pms.TypeApplication,
 		RolePolicies: []*pms.RolePolicy{&rolePolicy1, &rolePolicy2},
 	}
-	err = store.CreateService(&service)
+	err = etcdStore.CreateService(&service)
 	if err != nil {
 		t.Fatal("fail to write application:", err)
 	}
@@ -698,7 +698,7 @@ func TestWatch(t *testing.T) {
 	}
 
 	//delete app
-	store.DeleteService("app1_new")
+	etcdStore.DeleteService("app1_new")
 	select {
 	case <-time.After(5 * time.Second):
 		t.Errorf("fail to receive policy update event")

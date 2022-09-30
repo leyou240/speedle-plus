@@ -25,7 +25,7 @@ func initRouters(ps pms.PolicyStoreManager) (*[]route, error) {
 		return nil, err
 	}
 
-	svcRoutes := []route{}
+	var svcRoutes []route
 
 	policyManagerRoutes := []route{
 		{

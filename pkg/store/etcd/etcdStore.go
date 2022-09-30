@@ -50,7 +50,7 @@ func (s *Store) destroy() error {
 	return nil
 }
 
-// read policy store from etcd3
+// ReadPolicyStore read policy store from etcd3
 func (s *Store) ReadPolicyStore() (*pms.PolicyStore, error) {
 	serviceNames, err := s.GetServiceNames()
 	if err != nil {
@@ -72,7 +72,7 @@ func (s *Store) ReadPolicyStore() (*pms.PolicyStore, error) {
 	return &ps, nil
 }
 
-// write policy store to etcd3
+// WritePolicyStore write policy store to etcd3
 func (s *Store) WritePolicyStore(ps *pms.PolicyStore) error {
 	err := s.DeleteServices()
 	if err != nil {
@@ -171,7 +171,7 @@ func (s *Store) ListAllServices() (services []*pms.Service, err error) {
 	return services, nil
 }
 
-// TODO: to be implemented
+// GetServices TODO: to be implemented
 func (s *Store) GetServices(startName string, amount int, retrivePolcies bool) ([]*pms.Service, string, error) {
 	var services []*pms.Service
 	serviceNames, err := s.GetServiceNames()
@@ -284,7 +284,7 @@ func (s *Store) prefixGet(prefix string, opts ...clientv3.OpOption) ([]*clientv3
 	end := clientv3.GetPrefixRangeEnd(prefix)
 	getOpts := []clientv3.OpOption{clientv3.WithPrefix(), clientv3.WithLimit(pageSize), clientv3.WithSort(clientv3.SortByKey, clientv3.SortAscend)}
 	getOpts = append(getOpts, opts...)
-	ret := []*clientv3.GetResponse{}
+	var ret []*clientv3.GetResponse
 	for {
 		getResp, err := s.timeOutGet(prefix, getOpts...)
 		if err != nil {
@@ -379,7 +379,7 @@ func (s *Store) CreateService(service *pms.Service) error {
 
 }
 
-// delete application from etcd3
+// DeleteService delete application from etcd3
 func (s *Store) DeleteService(serviceName string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), requestTimeout)
 	defer cancel()
@@ -409,7 +409,7 @@ func (s *Store) DeleteServices() error {
 	return nil
 }
 
-// get the storage type of the store
+// Type get the storage type of the store
 func (s *Store) Type() string {
 	return StoreType
 }
@@ -668,7 +668,7 @@ func (s *Store) StopWatch() {
 	}
 }
 
-// For policy manager
+// ListAllPolicies For policy manager
 func (s *Store) ListAllPolicies(serviceName string, filter string) ([]*pms.Policy, error) {
 	f := parseFilter(filter)
 
@@ -756,7 +756,7 @@ func (s *Store) GetPolicy(serviceName string, id string) (*pms.Policy, error) {
 	return &policy, nil
 }
 
-// TODO: to be implemented
+// GetRolePolicies TODO: to be implemented
 func (s *Store) GetRolePolicies(serviceName string, startID string, amount int) (policies []*pms.RolePolicy, nextID string, err error) {
 	if amount <= 0 {
 		return nil, "", errors.Errorf(errors.InvalidRequest, "invalid amount %d", amount)
@@ -858,7 +858,7 @@ func (s *Store) CreatePolicy(serviceName string, policy *pms.Policy) (*pms.Polic
 	return &dupPolicy, nil
 }
 
-// For role policy manager
+// ListAllRolePolicies For role policy manager
 func (s *Store) ListAllRolePolicies(serviceName string, filter string) ([]*pms.RolePolicy, error) {
 	f := parseFilter(filter)
 	rolePolicyKeyPrefix := s.KeyPrefix + ServicesKey + KeySeparator + serviceName + KeySeparator + RolePoliciesKey
@@ -925,7 +925,7 @@ func (s *Store) getRolePolicyCountImpl(serviceName string) (int64, error) {
 	return getResp.Count, nil
 }
 
-// TODO: to be implemented
+// GetPolicies TODO: to be implemented
 func (s *Store) GetPolicies(serviceName string, startID string, amount int) (policies []*pms.Policy, nextID string, err error) {
 	if amount <= 0 {
 		return nil, "", errors.Errorf(errors.InvalidRequest, "invalid input amount %d", amount)

@@ -8,6 +8,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"google.golang.org/grpc/credentials/insecure"
 	"log"
 	"reflect"
 	"sort"
@@ -35,7 +36,7 @@ func NewGRpcClient() *GRpcClient {
 
 func (gc *GRpcClient) SetupConnection() error {
 	if gc.pmsConn == nil {
-		tmpConn, err := grpc.Dial("localhost:50001", grpc.WithInsecure())
+		tmpConn, err := grpc.Dial("localhost:50001", grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			log.Fatalf("did not pmsConnect: %v", err)
 			return err
@@ -45,7 +46,7 @@ func (gc *GRpcClient) SetupConnection() error {
 	}
 
 	if gc.adsConn == nil {
-		tmpConn, err := grpc.Dial("localhost:50002", grpc.WithInsecure())
+		tmpConn, err := grpc.Dial("localhost:50002", grpc.WithTransportCredentials(insecure.NewCredentials()))
 		if err != nil {
 			log.Fatalf("did not adsConnect: %v", err)
 			return err
@@ -63,8 +64,8 @@ func (gc *GRpcClient) CloseConnection() {
 	}
 }
 
-//-------------------GRpcTest definition------------------------
-//test data for spxctl command
+// GRpcTestData -------------------GRpcTest definition------------------------
+// test data for spxctl command
 type GRpcTestData struct {
 	InputBody    interface{} //Optional. Request body for method
 	OutputMsg    string      //Optional. Actual output Message
@@ -83,7 +84,7 @@ func NewGRpcTestExecuter() TestExecuter {
 	}
 }
 
-//Prepare for Test Execution. Set the default func in testcase
+// PreExecute Prepare for Test Execution. Set the default func in testcase
 func (test *GRpcTest) PreExecute(testcase *TestCase, tc *TestContext) error {
 	test.Client.SetupConnection()
 	testcase.VerifyTestFunc = VerifyGRpcTestByDefault
@@ -132,7 +133,7 @@ func (test *GRpcTest) PreExecute(testcase *TestCase, tc *TestContext) error {
 	return nil
 }
 
-//Execute current test with test data and context
+// Execute current test with test data and context
 func (test *GRpcTest) Execute(testcase *TestCase, tc *TestContext) error {
 
 	grpcTD := testcase.Data.(*GRpcTestData)
@@ -142,74 +143,74 @@ func (test *GRpcTest) Execute(testcase *TestCase, tc *TestContext) error {
 
 	switch testcase.Method {
 	case METHOD_CREATE_SERVICE:
-		resp, err = test.Client.pmsClient.CreateService(context.Background(), grpcTD.InputBody.(*(pmsPB.ServiceRequest)))
+		resp, err = test.Client.pmsClient.CreateService(context.Background(), grpcTD.InputBody.(*pmsPB.ServiceRequest))
 		if err == nil {
 			grpcTD.OutputBody = resp
 		}
 		break
 	case METHOD_QUERY_SERVICE:
-		resp, err = test.Client.pmsClient.QueryServices(context.Background(), grpcTD.InputBody.(*(pmsPB.ServiceQueryRequest)))
+		resp, err = test.Client.pmsClient.QueryServices(context.Background(), grpcTD.InputBody.(*pmsPB.ServiceQueryRequest))
 		serviceResp, ok := resp.(*pmsPB.ServiceQueryResponse)
 		if err == nil && ok {
 			grpcTD.OutputBody = &serviceResp.Services
 		}
 		break
 	case METHOD_DELETE_SERVICE:
-		resp, err = test.Client.pmsClient.DeleteServices(context.Background(), grpcTD.InputBody.(*(pmsPB.ServiceQueryRequest)))
+		resp, err = test.Client.pmsClient.DeleteServices(context.Background(), grpcTD.InputBody.(*pmsPB.ServiceQueryRequest))
 		grpcTD.OutputBody = resp
 		break
 	case METHOD_CREATE_POLICY:
-		resp, err = test.Client.pmsClient.CreatePolicy(context.Background(), grpcTD.InputBody.(*(pmsPB.PolicyRequest)))
+		resp, err = test.Client.pmsClient.CreatePolicy(context.Background(), grpcTD.InputBody.(*pmsPB.PolicyRequest))
 		if err == nil {
 			grpcTD.OutputBody = resp
 		}
 		break
 	case METHOD_QUERY_POLICY:
-		resp, err = test.Client.pmsClient.QueryPolicies(context.Background(), grpcTD.InputBody.(*(pmsPB.PolicyQueryRequest)))
+		resp, err = test.Client.pmsClient.QueryPolicies(context.Background(), grpcTD.InputBody.(*pmsPB.PolicyQueryRequest))
 		policyRsp, ok := resp.(*pmsPB.PolicyQueryResponse)
 		if err == nil && ok {
 			grpcTD.OutputBody = &policyRsp.Policies
 		}
 		break
 	case METHOD_DELETE_POLICY:
-		resp, err = test.Client.pmsClient.DeletePolicies(context.Background(), grpcTD.InputBody.(*(pmsPB.PolicyQueryRequest)))
+		resp, err = test.Client.pmsClient.DeletePolicies(context.Background(), grpcTD.InputBody.(*pmsPB.PolicyQueryRequest))
 		if err == nil {
 			grpcTD.OutputBody = resp
 		}
 		break
 	case METHOD_CREATE_ROLEPOLICY:
-		resp, err = test.Client.pmsClient.CreateRolePolicy(context.Background(), grpcTD.InputBody.(*(pmsPB.RolePolicyRequest)))
+		resp, err = test.Client.pmsClient.CreateRolePolicy(context.Background(), grpcTD.InputBody.(*pmsPB.RolePolicyRequest))
 		if err == nil {
 			grpcTD.OutputBody = resp
 		}
 		break
 	case METHOD_QUERY_ROLEPOLICY:
-		resp, err = test.Client.pmsClient.QueryRolePolicies(context.Background(), grpcTD.InputBody.(*(pmsPB.RolePolicyQueryRequest)))
+		resp, err = test.Client.pmsClient.QueryRolePolicies(context.Background(), grpcTD.InputBody.(*pmsPB.RolePolicyQueryRequest))
 		rolePolicyRsp, ok := resp.(*pmsPB.RolePolicyQueryResponse)
 		if err == nil && ok {
 			grpcTD.OutputBody = &rolePolicyRsp.RolePolicies
 		}
 		break
 	case METHOD_DELETE_ROLEPOLICY:
-		resp, err = test.Client.pmsClient.DeleteRolePolicies(context.Background(), grpcTD.InputBody.(*(pmsPB.RolePolicyQueryRequest)))
+		resp, err = test.Client.pmsClient.DeleteRolePolicies(context.Background(), grpcTD.InputBody.(*pmsPB.RolePolicyQueryRequest))
 		if err == nil {
 			grpcTD.OutputBody = resp
 		}
 		break
 	case METHOD_IS_ALLOWED:
-		resp, err = test.Client.adsClient.IsAllowed(context.Background(), grpcTD.InputBody.(*(adsPB.ContextRequest)))
+		resp, err = test.Client.adsClient.IsAllowed(context.Background(), grpcTD.InputBody.(*adsPB.ContextRequest))
 		if err == nil {
 			grpcTD.OutputBody = resp
 		}
 		break
 	case METHOD_GET_GRANTED_ROLES:
-		resp, err = test.Client.adsClient.GetAllGrantedRoles(context.Background(), grpcTD.InputBody.(*(adsPB.ContextRequest)))
+		resp, err = test.Client.adsClient.GetAllGrantedRoles(context.Background(), grpcTD.InputBody.(*adsPB.ContextRequest))
 		if err == nil {
 			grpcTD.OutputBody = resp
 		}
 		break
 	case METHOD_GET_GRANTED_PERMISSIONS:
-		resp, err = test.Client.adsClient.GetAllPermissions(context.Background(), grpcTD.InputBody.(*(adsPB.ContextRequest)))
+		resp, err = test.Client.adsClient.GetAllPermissions(context.Background(), grpcTD.InputBody.(*adsPB.ContextRequest))
 		if err == nil {
 			grpcTD.OutputBody = resp
 		}
@@ -226,7 +227,7 @@ func (test *GRpcTest) Execute(testcase *TestCase, tc *TestContext) error {
 
 //-------------Common util func for REST------------------------
 
-//Verify RestTestData By Default
+// VerifyGRpcTestByDefault Verify RestTestData By Default
 func VerifyGRpcTestByDefault(data interface{}, context *TestContext) bool {
 	grpcTD, ok := data.(*GRpcTestData)
 	if !ok {
@@ -262,7 +263,7 @@ func VerifyGRpcTestByDefault(data interface{}, context *TestContext) bool {
 
 }
 
-//Verify RestTestData By Default
+// VerifyGRpcAllGrantedRoleResult Verify RestTestData By Default
 func VerifyGRpcAllGrantedRoleResult(data interface{}, context *TestContext) bool {
 	grpcTD, ok := data.(*GRpcTestData)
 	if !ok {
@@ -277,7 +278,7 @@ func VerifyGRpcAllGrantedRoleResult(data interface{}, context *TestContext) bool
 	//return CompareStringArray_NoOrder(epcRoleResp.Roles, actRoleResp.Roles)
 }
 
-//VerifyGRpcAllGrantedPermissions verify allGrantedPermissions response
+// VerifyGRpcAllGrantedPermissions verify allGrantedPermissions response
 func VerifyGRpcAllGrantedPermissions(data interface{}, context *TestContext) bool {
 	grpcTD, ok := data.(*GRpcTestData)
 	if !ok {
@@ -301,8 +302,8 @@ func VerifyGRpcAllGrantedPermissions(data interface{}, context *TestContext) boo
 	TestLog.Logf("VerifyGRpcAllGrantedPermissions,epcPermsResp=%v", epcPermResp)
 	TestLog.Logf("VerifyGRpcAllGrantedPermissions,actPermsResp=%v", actPermResp)
 
-	epcPerms := []string{}
-	actPerms := []string{}
+	var epcPerms []string
+	var actPerms []string
 
 	for j := 0; j < len(epcPermResp.Permissions); j++ {
 		epcPerms = append(epcPerms, fmt.Sprintf("%v-%v", epcPermResp.Permissions[j].Resource, epcPermResp.Permissions[j].Actions))

@@ -5,7 +5,6 @@ package eval
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -18,7 +17,7 @@ import (
 )
 
 func WriteToTempFile(content []byte) (string, error) {
-	tmpfile, err := ioutil.TempFile("", "authz-evaluator-")
+	tmpfile, err := os.CreateTemp("", "authz-evaluator-")
 	defer tmpfile.Close()
 	if err != nil {
 		return "", err

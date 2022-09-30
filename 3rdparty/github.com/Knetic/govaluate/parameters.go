@@ -6,8 +6,8 @@ import (
 )
 
 /*
-	Parameters is a collection of named parameters that can be used by an EvaluableExpression to retrieve parameters
-	when an expression tries to use them.
+Parameters is a collection of named parameters that can be used by an EvaluableExpression to retrieve parameters
+when an expression tries to use them.
 */
 type Parameters interface {
 
@@ -32,7 +32,7 @@ func (p MapParameters) Get(name string) (interface{}, error) {
 	if value != nil {
 		s := reflect.ValueOf(value)
 		if s.Kind() == reflect.Slice {
-			ret := []interface{}{}
+			var ret []interface{}
 			for i := 0; i < s.Len(); i++ {
 				ret = append(ret, s.Index(i).Interface())
 			}

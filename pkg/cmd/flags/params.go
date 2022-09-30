@@ -7,7 +7,6 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 	"strings"
@@ -129,7 +128,7 @@ func (k *Parameters) newTLSServer(handler http.Handler) (*http.Server, error) {
 	tlsConfig := &tls.Config{}
 
 	if k.ClientCertPath.Value != "" {
-		caCert, err := ioutil.ReadFile(k.ClientCertPath.Value)
+		caCert, err := os.ReadFile(k.ClientCertPath.Value)
 		if err != nil {
 			return nil, errors.Wrapf(err, errors.ConfigError, "unable to read client CA certification from file %s", k.ClientCertPath.Value)
 		}
@@ -419,7 +418,7 @@ func (k *Parameters) ParseFlags(defaultEndpoint string, printVersionInfoFun func
 					}
 				case k.AsserterConf.AsserterClientTimeout.Name:
 					if conf != nil && conf.AsserterWebhookConfig != nil {
-						f.Value.Set(string(conf.AsserterWebhookConfig.HTTPTimeout))
+						f.Value.Set(strconv.Itoa(conf.AsserterWebhookConfig.HTTPTimeout))
 					}
 				default:
 					//

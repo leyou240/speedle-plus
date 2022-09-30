@@ -6,7 +6,6 @@ package benchmarks
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"testing"
 
@@ -282,7 +281,7 @@ func simpleRolePolicyWriter(w io.Writer, pno, uc int) error {
 }
 
 func writePolicyFile(fname string, pc, uc int, pw func(w io.Writer, pno int) error, rpw func(w io.Writer, pno, uc int) error) (string, error) {
-	pf, err := ioutil.TempFile(os.TempDir(), fname+"_*.spdl")
+	pf, err := os.CreateTemp(os.TempDir(), fname+"_*.spdl")
 	if err != nil {
 		return "", err
 	}

@@ -48,7 +48,7 @@ func (s *Store) PutRequest(request *ads.RequestContext) (int64, error) {
 			succeed = true
 			count := txnResp.Responses[1].GetResponseRange().Count
 			if count >= store.MaxDiscoverRequestNum { //reach Max number of requests, remove the oldest ones.
-				keys := []string{}
+				var keys []string
 				for _, kv := range txnResp.Responses[2].GetResponseRange().Kvs {
 					keys = append(keys, string(kv.Key))
 				}
@@ -62,7 +62,7 @@ func (s *Store) PutRequest(request *ads.RequestContext) (int64, error) {
 }
 
 func (s *Store) DeleteRequests(keys []string) error {
-	deleteOps := []clientv3.Op{}
+	var deleteOps []clientv3.Op
 	for _, key := range keys {
 		deleteOps = append(deleteOps, clientv3.OpDelete(key))
 	}
@@ -105,7 +105,7 @@ func (s *Store) GetDiscoverRequestsSinceRevision(serviceName string, revision in
 	if err != nil {
 		return nil, revision, errors.Wrapf(err, errors.StoreError, "unable to get discover request for service %q with revision %d", serviceName, revision)
 	}
-	requests := []*ads.RequestContext{}
+	var requests []*ads.RequestContext
 	for _, kv := range getResp.Kvs {
 		var req ads.RequestContext
 		err = json.Unmarshal(kv.Value, &req)
@@ -119,7 +119,7 @@ func (s *Store) GetDiscoverRequestsSinceRevision(serviceName string, revision in
 }
 
 func (s *Store) GetRequests(keyPrefix string, pageSize int64) ([]*ads.RequestContext, int64, error) {
-	requests := []*ads.RequestContext{}
+	var requests []*ads.RequestContext
 	getOpts := []clientv3.OpOption{clientv3.WithPrefix(), clientv3.WithLimit(pageSize), clientv3.WithSort(clientv3.SortByCreateRevision, clientv3.SortAscend)}
 	var revision int64
 	for {

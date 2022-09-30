@@ -69,25 +69,25 @@ func (esb Etcd3StoreBuilder) NewStore(config map[string]interface{}) (pms.Policy
 		}
 	}
 
-	store := Store{}
+	etcdStore := Store{}
 	var etcd3ClientConf clientv3.Config
 	if isEmbeddedEtcd {
 		etcdEndpoint := "localhost:2379"
 		embeddedEtcdDataDir, _ := config[EmbeddedEtcdDataDirKey].(string)
-		fmt.Printf("new embedded Etcd store: embeddedEtcdDataDir = %q, etcdEndpoint = %q, keyPrefix = %q\n", embeddedEtcdDataDir, etcdEndpoint, keyPrefix)
+		fmt.Printf("new embedded Etcd etcdStore: embeddedEtcdDataDir = %q, etcdEndpoint = %q, keyPrefix = %q\n", embeddedEtcdDataDir, etcdEndpoint, keyPrefix)
 		embeddedInst, embeddedDir, err := StartEmbeddedEtcd(embeddedEtcdDataDir)
 		if err != nil {
 			return nil, err
 		}
-		store.embeddedDir = embeddedDir
-		store.embeddedInst = embeddedInst
+		etcdStore.embeddedDir = embeddedDir
+		etcdStore.embeddedInst = embeddedInst
 		etcd3ClientConf.Endpoints = []string{etcdEndpoint}
 	} else {
 		etcdEndpoint, ok := config[EtcdEndpointKey].(string)
 		if !ok {
 			return nil, errors.New(errors.ConfigError, "configure item EtcdEndpoint is not found")
 		}
-		log.Debugf("new Etcd store: etcdEndpoint = %q, keyPrefix = %q\n", etcdEndpoint, keyPrefix)
+		log.Debugf("new Etcd etcdStore: etcdEndpoint = %q, keyPrefix = %q\n", etcdEndpoint, keyPrefix)
 		etcd3ClientConf.Endpoints = []string{etcdEndpoint}
 		if strings.HasPrefix(etcdEndpoint, "https") {
 			tlsInfo := transport.TLSInfo{}
@@ -137,11 +137,11 @@ func (esb Etcd3StoreBuilder) NewStore(config map[string]interface{}) (pms.Policy
 	if err != nil {
 		return nil, errors.Wrap(err, errors.StoreError, "failed to connect to etcd server")
 	}
-	store.client = cli
-	store.Config = &etcd3ClientConf
-	store.KeyPrefix = keyPrefix
-	fmt.Println("Etcd store...")
-	return &store, nil
+	etcdStore.client = cli
+	etcdStore.Config = &etcd3ClientConf
+	etcdStore.KeyPrefix = keyPrefix
+	fmt.Println("Etcd etcdStore...")
+	return &etcdStore, nil
 }
 
 func convertValueToBool(val interface{}, keyName string) (bool, error) {

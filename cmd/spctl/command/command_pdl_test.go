@@ -277,7 +277,7 @@ func getCmdTestDataForGetPolicyWithGroupName(sName string, policyName string, gr
 	return tmpData
 }
 
-//Create policy with group name containing all kinds of special chars
+// Create policy with group name containing all kinds of special chars
 func TestLrg_PDLWithSpecifiedGroupName(t *testing.T) {
 	sName := "TestLrg_PDLWithSpecifiedGroupName"
 	sType := "application"
@@ -288,7 +288,7 @@ func TestLrg_PDLWithSpecifiedGroupName(t *testing.T) {
 	}
 
 	testutil.InitSpecialNames()
-	data := []testutil.TestCase{}
+	var data []testutil.TestCase
 	data = append(data, getCmdTestDataForCreateService(sName, sType))
 	for i, gName := range testutil.SpecialNames {
 		policyName := fmt.Sprintf("policyWithGroupName_%d", i)
@@ -299,7 +299,7 @@ func TestLrg_PDLWithSpecifiedGroupName(t *testing.T) {
 	testutil.RunTestCases(t, &data, context)
 }
 
-//Create policy with user name containing all kinds of special chars
+// Create policy with user name containing all kinds of special chars
 func TestLrg_PDLWithSpecifiedUserName(t *testing.T) {
 	sName := "TestLrg_PDLWithSpecifiedUserName"
 	sType := "application"
@@ -310,7 +310,7 @@ func TestLrg_PDLWithSpecifiedUserName(t *testing.T) {
 	}
 
 	testutil.InitSpecialNames()
-	data := []testutil.TestCase{}
+	var data []testutil.TestCase
 	data = append(data, getCmdTestDataForCreateService(sName, sType))
 	for i, usrName := range testutil.SpecialNames {
 		policyName := fmt.Sprintf("policyWithUserName_%d", i)
@@ -320,7 +320,7 @@ func TestLrg_PDLWithSpecifiedUserName(t *testing.T) {
 	testutil.RunTestCases(t, &data, context)
 }
 
-//Create policy with role name containing all kinds of special chars
+// Create policy with role name containing all kinds of special chars
 func TestLrg_PDLWithSpecifiedRoleName(t *testing.T) {
 	sName := "TestLrg_PDLWithSpecifiedRoleName"
 	sType := "application"
@@ -331,7 +331,7 @@ func TestLrg_PDLWithSpecifiedRoleName(t *testing.T) {
 	}
 
 	testutil.InitSpecialNames()
-	data := []testutil.TestCase{}
+	var data []testutil.TestCase
 	data = append(data, getCmdTestDataForCreateService(sName, sType))
 	for i, gName := range testutil.SpecialNames {
 		policyName := fmt.Sprintf("policyWithRoleName_%d", i)
@@ -341,7 +341,7 @@ func TestLrg_PDLWithSpecifiedRoleName(t *testing.T) {
 	testutil.RunTestCases(t, &data, context)
 }
 
-//Create policy with action name containing all kinds of special chars
+// Create policy with action name containing all kinds of special chars
 func TestLrg_PDLWithSpecifiedActionName(t *testing.T) {
 	sName := "TestLrg_PDLWithSpecifiedActionName"
 	sType := "application"
@@ -352,7 +352,7 @@ func TestLrg_PDLWithSpecifiedActionName(t *testing.T) {
 	}
 
 	testutil.InitSpecialNames()
-	data := []testutil.TestCase{}
+	var data []testutil.TestCase
 	data = append(data, getCmdTestDataForCreateService(sName, sType))
 	for i, gName := range testutil.SpecialNames {
 		policyName := fmt.Sprintf("policyWithAction_%d", i)
@@ -362,7 +362,7 @@ func TestLrg_PDLWithSpecifiedActionName(t *testing.T) {
 	testutil.RunTestCases(t, &data, context)
 }
 
-//Create policy with resource name containing all kinds of special chars
+// Create policy with resource name containing all kinds of special chars
 func TestLrg_PDLWithSpecifiedResourceName(t *testing.T) {
 	sName := "TestLrg_PDLWithSpecifiedResourceName"
 	sType := "application"
@@ -373,7 +373,7 @@ func TestLrg_PDLWithSpecifiedResourceName(t *testing.T) {
 	}
 
 	testutil.InitSpecialNames()
-	data := []testutil.TestCase{}
+	var data []testutil.TestCase
 	data = append(data, getCmdTestDataForCreateService(sName, sType))
 	for i, resName := range testutil.SpecialNames {
 		policyName := fmt.Sprintf("policyWithResource_%d", i)
@@ -384,7 +384,7 @@ func TestLrg_PDLWithSpecifiedResourceName(t *testing.T) {
 	testutil.RunTestCases(t, &data, context)
 }
 
-//Create role-policy with resource name containing all kinds of special chars
+// Create role-policy with resource name containing all kinds of special chars
 func TestLrg_PDLWithSpecifiedResourceNameInRolePolicy(t *testing.T) {
 	sName := "TestLrg_PDLWithSpecifiedResourceName"
 	sType := "application"
@@ -395,7 +395,7 @@ func TestLrg_PDLWithSpecifiedResourceNameInRolePolicy(t *testing.T) {
 	}
 
 	testutil.InitSpecialNames()
-	data := []testutil.TestCase{}
+	var data []testutil.TestCase
 	data = append(data, getCmdTestDataForCreateService(sName, sType))
 	for i, resName := range testutil.SpecialNames {
 		rpolicyName := fmt.Sprintf("rolePolicyWithResource_%d", i)
@@ -406,7 +406,7 @@ func TestLrg_PDLWithSpecifiedResourceNameInRolePolicy(t *testing.T) {
 	testutil.RunTestCases(t, &data, context)
 }
 
-//Create role-policy with role name containing all kinds of special chars
+// Create role-policy with role name containing all kinds of special chars
 func TestLrg_PDLWithSpecifiedRoleNameInRolePolicy(t *testing.T) {
 	sName := "TestLrg_PDLWithSpecifiedResourceName"
 	sType := "application"
@@ -417,7 +417,7 @@ func TestLrg_PDLWithSpecifiedRoleNameInRolePolicy(t *testing.T) {
 	}
 
 	testutil.InitSpecialNames()
-	data := []testutil.TestCase{}
+	var data []testutil.TestCase
 	data = append(data, getCmdTestDataForCreateService(sName, sType))
 	for i, roleName := range testutil.SpecialNames {
 		rpolicyName := fmt.Sprintf("rolePolicyWithRole_%d", i)

@@ -25,11 +25,11 @@ type PolicyEvaluator interface {
 }
 
 type Discover interface {
-	// always returns true in Resource Discovery Mode
+	// Discover always returns true in Resource Discovery Mode
 	Discover(c RequestContext) (allowed bool, reason Reason, err error)
 }
 
 type Diagnose interface {
-	// returns all the policies related to a subject
+	// Diagnose returns all the policies related to a subject
 	Diagnose(c RequestContext) (*EvaluationResult, error)
 }

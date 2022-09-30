@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -51,45 +52,45 @@ type RestClient struct {
 	userPwd    string //the userPwd for basic authentication
 }
 
-//Set prefix of RestClient
+// Set prefix of RestClient
 func (client *RestClient) SetPrefix(newPrefix string) {
 	client.prefix = newPrefix
 }
 
-//Get prefix of RestClient
+// Get prefix of RestClient
 func (client *RestClient) Prefix() string {
 	return client.prefix
 }
 
-//Set token of RestClient
+// Set token of RestClient
 func (client *RestClient) SetToken(newToken string) {
 	client.token = newToken
 	client.userName = ""
 	client.userPwd = ""
 }
 
-//Get token of RestClient
+// Get token of RestClient
 func (client *RestClient) Token() string {
 	return client.token
 }
 
-//Set baisc auth userName/userPwd of RestClient
+// Set baisc auth userName/userPwd of RestClient
 func (client *RestClient) SetBasicAuth(name string, pwd string) {
 	client.userName = name
 	client.userPwd = pwd
 	client.token = ""
 }
 
-//Do REST GET api method with specified data (RestTestData)
+// Do REST GET api method with specified data (RestTestData)
 func (client *RestClient) Get(data interface{}) error {
 	restTD, ok := data.(*RestTestData)
 	if !ok {
 		TestLog.Fatalf("Fail to convert data to RestTestData")
 	}
 
-	url := client.prefix + restTD.URI
-	TestLog.Logf("GET URI=%s \n", url)
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	uri := client.prefix + restTD.URI
+	TestLog.Logf("GET URI=%s \n", uri)
+	req, err := http.NewRequest(http.MethodGet, uri, nil)
 	if err != nil {
 		return err
 	}
@@ -110,7 +111,7 @@ func (client *RestClient) Get(data interface{}) error {
 
 	defer resp.Body.Close()
 	if restTD.OutputBody != nil {
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		TestLog.Logf("GET Output body=%s", body)
 		if err := json.Unmarshal(body, restTD.OutputBody); err != nil {
 			TestLog.Logf("Fail to unmarshal JSON format, err=%s", err.Error())
@@ -121,16 +122,16 @@ func (client *RestClient) Get(data interface{}) error {
 	return nil
 }
 
-//Do REST DELETE api method with specified data (RestTestData)
+// Do REST DELETE api method with specified data (RestTestData)
 func (client *RestClient) Delete(data interface{}) error {
 	restTD, ok := data.(*RestTestData)
 	if !ok {
 		TestLog.Fatalf("Fail to convert data to RestTestData")
 	}
 
-	url := client.prefix + restTD.URI
-	TestLog.Logf("DELETE URI=%s \n", url)
-	req, err := http.NewRequest(http.MethodDelete, url, nil)
+	uri := client.prefix + restTD.URI
+	TestLog.Logf("DELETE URI=%s \n", uri)
+	req, err := http.NewRequest(http.MethodDelete, uri, nil)
 	if err != nil {
 		return err
 	}
@@ -150,7 +151,7 @@ func (client *RestClient) Delete(data interface{}) error {
 
 	if restTD.OutputBody != nil {
 
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		TestLog.Logf("DELETE Output body=%s", body)
 		if err := json.Unmarshal(body, restTD.OutputBody); err != nil {
 			TestLog.Logf("Fail to unmarshal JSON format, err=%s", err.Error())
@@ -162,7 +163,7 @@ func (client *RestClient) Delete(data interface{}) error {
 	return nil
 }
 
-//Do REST POST api method with specified data (RestTestData)
+// Do REST POST api method with specified data (RestTestData)
 func (client *RestClient) Post(data interface{}) error {
 	restTD, ok := data.(*RestTestData)
 	if !ok {
@@ -238,7 +239,7 @@ func (client *RestClient) Post(data interface{}) error {
 
 	if restTD.OutputBody != nil {
 
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		TestLog.Logf("POST Output body=%s", body)
 		if err := json.Unmarshal(body, restTD.OutputBody); err != nil {
 			TestLog.Logf("Fail to unmarshal JSON format, err=%s", err.Error())
@@ -250,22 +251,22 @@ func (client *RestClient) Post(data interface{}) error {
 	return nil
 }
 
-//Do REST PUT api method with specified data (RestTestData)
+// Do REST PUT api method with specified data (RestTestData)
 func (client *RestClient) Put(data interface{}) error {
 	restTD, ok := data.(*RestTestData)
 	if !ok {
 		TestLog.Fatalf("Fail to convert data to RestTestData")
 	}
 
-	url := client.prefix + restTD.URI
-	TestLog.Logf("PUT URI=%s \n", url)
+	uri := client.prefix + restTD.URI
+	TestLog.Logf("PUT URI=%s \n", uri)
 
 	var req *http.Request = nil
 	var err error
 
 	if reflect.ValueOf(restTD.InputBody).Kind() == reflect.String {
 		payload := restTD.InputBody.(string)
-		req, err = http.NewRequest(http.MethodPut, url, strings.NewReader(payload))
+		req, err = http.NewRequest(http.MethodPut, uri, strings.NewReader(payload))
 		TestLog.Logf("Put Input == %s \r\n", payload)
 	} else {
 
@@ -274,7 +275,7 @@ func (client *RestClient) Put(data interface{}) error {
 			return err
 		}
 		TestLog.Logf("PUT Input == %s \r\n", payload)
-		req, err = http.NewRequest(http.MethodPut, url, bytes.NewBuffer(payload))
+		req, err = http.NewRequest(http.MethodPut, uri, bytes.NewBuffer(payload))
 	}
 
 	if err != nil {
@@ -298,7 +299,7 @@ func (client *RestClient) Put(data interface{}) error {
 
 	if restTD.OutputBody != nil {
 
-		body, _ := ioutil.ReadAll(resp.Body)
+		body, _ := io.ReadAll(resp.Body)
 		TestLog.Logf("PUT Output body=%s", body)
 		if err := json.Unmarshal(body, restTD.OutputBody); err != nil {
 			TestLog.Logf("Fail to unmarshal output body, err=%s", err.Error())
@@ -308,8 +309,8 @@ func (client *RestClient) Put(data interface{}) error {
 	return nil
 }
 
-//Get Rest Client
-//if both curToken and basicAuth are specified, curToken would do effect
+// Get Rest Client
+// if both curToken and basicAuth are specified, curToken would do effect
 func NewRestClient(endpoint string, curToken string, basicAuthName string, basicAuthPwd string) (*RestClient, error) {
 	caLoc := GetOSEnv(CA_LOCATION, "")
 	certLoc := GetOSEnv(CERT_LOCATION, "")
@@ -358,7 +359,7 @@ func NewRestClient(endpoint string, curToken string, basicAuthName string, basic
 	}, nil
 }
 
-//Get RestClient for policy management
+// Get RestClient for policy management
 func NewRestClient_PMS() *RestClient {
 
 	pmsEndpoint := GetOSEnv(PMS_ENDPOINT, "http://"+flags.DefaultPolicyManagmentConnectEndpoint)
@@ -375,7 +376,7 @@ func NewRestClient_PMS() *RestClient {
 	return client
 }
 
-//Get RestClient for Authz check
+// Get RestClient for Authz check
 func NewRestClient_ADS() *RestClient {
 
 	adsEndpoint := GetOSEnv(ADS_ENDPOINT, "http://"+flags.DefaultAuthzCheckEndPoint)
@@ -394,7 +395,7 @@ func NewRestClient_ADS() *RestClient {
 
 //--------------RestTest and RestTestData definition-----------
 
-//TestData for REST API testing
+// TestData for REST API testing
 type RestTestData struct {
 	URI            string
 	actualStatus   int
@@ -404,12 +405,12 @@ type RestTestData struct {
 	ExpectedBody   interface{} //Expected output data
 }
 
-//Rest Test including RestClient and implementing Executer interface
+// Rest Test including RestClient and implementing Executer interface
 type RestTest struct {
 	Client *RestClient
 }
 
-//Prepare for Test Execution. Set the default func in testcase
+// Prepare for Test Execution. Set the default func in testcase
 func (test *RestTest) PreExecute(testcase *TestCase, ctx *TestContext) error {
 
 	testcase.SetVerifyTestFunc(VerifyRestTestByDefault)
@@ -480,7 +481,7 @@ func (test *RestTest) PreExecute(testcase *TestCase, ctx *TestContext) error {
 	return nil
 }
 
-//Execute current test with test data and context
+// Execute current test with test data and context
 func (test *RestTest) Execute(testcase *TestCase, ctx *TestContext) error {
 	testData := testcase.Data
 
@@ -498,7 +499,7 @@ func (test *RestTest) Execute(testcase *TestCase, ctx *TestContext) error {
 	}
 }
 
-//New RestTest
+// New RestTest
 func NewRestTestExecuter() TestExecuter {
 	return &RestTest{
 		Client: nil,
@@ -507,7 +508,7 @@ func NewRestTestExecuter() TestExecuter {
 
 //-------------Common util func for REST------------------------
 
-//Verify RestTestData By Default
+// Verify RestTestData By Default
 func VerifyRestTestByDefault(data interface{}, context *TestContext) bool {
 	restTD, ok := data.(*RestTestData)
 	if !ok {
@@ -540,7 +541,7 @@ func VerifyRestTestByDefault(data interface{}, context *TestContext) bool {
 	return equal
 }
 
-//GetRestTestData for creating service
+// GetRestTestData for creating service
 func GetRestTestData_CreateService(step string, srvName string) TestCase {
 	return TestCase{
 		Name:     fmt.Sprintf("Step%s-AddService", step),
@@ -566,7 +567,7 @@ func GetRestTestData_CreateService(step string, srvName string) TestCase {
 	}
 }
 
-//GetRestTestData for deleting service
+// GetRestTestData for deleting service
 func GetRestTestData_DeleteService(step string, srvName string) TestCase {
 	return TestCase{
 		Name:     fmt.Sprintf("Step%s-Delete Service", step),
@@ -579,7 +580,7 @@ func GetRestTestData_DeleteService(step string, srvName string) TestCase {
 	}
 }
 
-//GetRestTestData for creating rolepolicy
+// GetRestTestData for creating rolepolicy
 func GetRestTestData_CreateRolePolicy(step string, srvName string, rolePolicyName string, effect string, roles []string, principals []string, resources []string) TestCase {
 	return TestCase{
 		Name:     fmt.Sprintf("Step%s-Add RolePolicy", step),
@@ -608,7 +609,7 @@ func GetRestTestData_CreateRolePolicy(step string, srvName string, rolePolicyNam
 	}
 }
 
-//GetRestTestData for creating policy
+// GetRestTestData for creating policy
 func GetRestTestData_CreatePolicy(step string, srvName string, policyName string, effect string, principals [][]string, resource string, actions []string) TestCase {
 	return TestCase{
 		Name:     fmt.Sprintf("Step%s-Add Policy", step),
@@ -645,7 +646,7 @@ func GetRestTestData_CreatePolicy(step string, srvName string, policyName string
 	}
 }
 
-//Get TestData for sleeping a while (in ms)
+// Get TestData for sleeping a while (in ms)
 func GetTestData_Sleep(sleep int) TestCase {
 	sleepStr := fmt.Sprintf("sleep_%d", sleep)
 	return TestCase{

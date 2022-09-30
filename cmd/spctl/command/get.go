@@ -70,14 +70,14 @@ func getCommandFunc(cmd *cobra.Command, args []string) {
 		HTTPClient:  hc,
 	}
 	var res []byte
-	var output = []byte{}
+	var output []byte
 
 	switch strings.ToLower(args[0]) {
 	case "service":
 		if all {
 			res, err = cli.Get([]string{"service"}, nil, "")
 			if err == nil {
-				services := []pms.Service{}
+				var services []pms.Service
 				if json.Unmarshal(res, &services) == nil {
 					output, _ = json.MarshalIndent(&services, "", strings.Repeat(" ", 4))
 				}
@@ -151,7 +151,7 @@ func getCommandFunc(cmd *cobra.Command, args []string) {
 		if all {
 			res, err = cli.Get([]string{"function"}, nil, "")
 			if err == nil {
-				functions := []pms.Function{}
+				var functions []pms.Function
 				if json.Unmarshal(res, &functions) == nil {
 					output, _ = json.MarshalIndent(&functions, "", strings.Repeat(" ", 4))
 				}

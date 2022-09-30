@@ -51,7 +51,7 @@ func convertGRPCPrincipals(principals []*pb.Principal) []*adsapi.Principal {
 		return nil
 	}
 
-	ret := []*adsapi.Principal{}
+	var ret []*adsapi.Principal
 	for _, princ := range principals {
 		ret = append(ret, &adsapi.Principal{
 			Type: princ.Type,
@@ -180,7 +180,7 @@ func convertAttributes(in map[string]interface{}) map[string]string {
 }
 
 func convertToGRPCPrincipals(principals [][]string) []*pb.AndPrincipals {
-	ret := []*pb.AndPrincipals{}
+	var ret []*pb.AndPrincipals
 	for _, andPrincipals := range principals {
 		andPrinc := &pb.AndPrincipals{
 			Principals: andPrincipals,
@@ -196,7 +196,7 @@ func convertAPIPrincipals(principals []*adsapi.Principal) []*pb.Principal {
 		return nil
 	}
 
-	ret := []*pb.Principal{}
+	var ret []*pb.Principal
 	for _, princ := range principals {
 		ret = append(ret, &pb.Principal{
 			Type: princ.Type,
