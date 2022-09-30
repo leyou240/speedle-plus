@@ -83,7 +83,7 @@ testSpeedleTls:
 	pkg/svcs/pmsrest/tls_test.sh
 	pkg/svcs/pmsrest/tls_test-force-client-cert.sh
 clean:
-	rm -rf ${gopath}/pkg/linux_amd64/github.com/teramoby/speedle-plus
+	rm -rf ${gopath}/pkg/linux_amd64/github.com/leyou240/speedle-plus
 	rm -f ${gopath}/bin/speedle-pms
 	rm -f ${gopath}/bin/speedle-ads
 	rm -f ${gopath}/bin/spctl
