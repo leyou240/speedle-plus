@@ -11,6 +11,7 @@ import (
 	"os"
 	"os/signal"
 
+	log "github.com/sirupsen/logrus"
 	adsapi "github.com/teramoby/speedle-plus/api/ads"
 	"github.com/teramoby/speedle-plus/pkg/assertion"
 	"github.com/teramoby/speedle-plus/pkg/cfg"
@@ -22,9 +23,6 @@ import (
 	"github.com/teramoby/speedle-plus/pkg/svcs/adsgrpc"
 	"github.com/teramoby/speedle-plus/pkg/svcs/adsgrpc/pb"
 	"github.com/teramoby/speedle-plus/pkg/svcs/adsrest"
-
-	log "github.com/sirupsen/logrus"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

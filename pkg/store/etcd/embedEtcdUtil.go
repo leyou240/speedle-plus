@@ -4,15 +4,14 @@
 package etcd
 
 import (
-	"io/ioutil"
+	"go.etcd.io/etcd/server/v3/embed"
 	"net"
 	"os"
 	"strconv"
 	"time"
 
-	"github.com/coreos/etcd/embed"
-	"github.com/teramoby/speedle-plus/pkg/errors"
 	log "github.com/sirupsen/logrus"
+	"github.com/teramoby/speedle-plus/pkg/errors"
 )
 
 var embededStarted = false
@@ -20,7 +19,7 @@ var isStartedByOtherProcess = false
 
 const embeddedEtcdPort = 2379
 
-//StartEmbeddedEtcd start a embed etcd which use a clean tmp directory to store data
+// StartEmbeddedEtcd start a embed etcd which use a clean tmp directory to store data
 func StartEmbeddedEtcd(dataDir string) (etcd *embed.Etcd, etcdDir string, err error) {
 	if embededStarted {
 		// Already started
@@ -33,7 +32,7 @@ func StartEmbeddedEtcd(dataDir string) (etcd *embed.Etcd, etcdDir string, err er
 	}
 	etcdDir = dataDir
 	if etcdDir == "" {
-		etcdDir, err = ioutil.TempDir(os.TempDir(), "etcd.tmp")
+		etcdDir, err = os.MkdirTemp(os.TempDir(), "etcd.tmp")
 		log.Infof("The embedded etcd store dir is %q", etcdDir)
 		if err != nil {
 			log.Error(err)
@@ -42,7 +41,7 @@ func StartEmbeddedEtcd(dataDir string) (etcd *embed.Etcd, etcdDir string, err er
 	}
 
 	cfg := embed.NewConfig()
-	cfg.Debug = true
+	//cfg.Debug = true
 	cfg.Dir = etcdDir
 	etcd, err = embed.StartEtcd(cfg)
 	if err != nil {
@@ -61,7 +60,7 @@ func StartEmbeddedEtcd(dataDir string) (etcd *embed.Etcd, etcdDir string, err er
 	return etcd, etcdDir, err
 }
 
-//CleanEmbedEtcd free the resource of embed etcd, and remove the tmp directory which is used to store data
+// CleanEmbedEtcd free the resource of embed etcd, and remove the tmp directory which is used to store data
 func CleanEmbeddedEtcd(etcd *embed.Etcd, etcdDir string) {
 	if embededStarted {
 		etcd.Close()

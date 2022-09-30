@@ -1,5 +1,5 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
+// Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
+// Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
 package eval
 
 import (
@@ -8,18 +8,17 @@ import (
 	"crypto/x509"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 	"sync"
 	"time"
 
+	log "github.com/sirupsen/logrus"
+	"github.com/teramoby/speedle-plus/3rdparty/github.com/Knetic/govaluate"
 	"github.com/teramoby/speedle-plus/api/ext"
 	"github.com/teramoby/speedle-plus/api/pms"
-
-	"github.com/teramoby/speedle-plus/3rdparty/github.com/Knetic/govaluate"
 	"github.com/teramoby/speedle-plus/pkg/errors"
-	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -236,7 +235,7 @@ func getFunctionResp(client *http.Client, request *http.Request, cf *pms.Functio
 	case http.StatusOK:
 		defer resp.Body.Close()
 		//TODO: We might need to limit the larget size we want to receive
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err := io.ReadAll(resp.Body)
 		if err != nil {
 			log.Errorf("error reading response from customer function %s, err is: %v\n", cf.Name, err)
 			return nil, errors.Wrapf(err, errors.CustomerFuncError, "fail to read response for customer function %q", cf.Name)

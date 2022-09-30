@@ -1,10 +1,10 @@
 package eval
 
 import (
+	log "github.com/sirupsen/logrus"
 	"github.com/teramoby/speedle-plus/api/ads"
 	"github.com/teramoby/speedle-plus/pkg/errors"
 	"github.com/teramoby/speedle-plus/pkg/store"
-	log "github.com/sirupsen/logrus"
 )
 
 func (p *PolicyEvalImpl) Discover(ctx ads.RequestContext) (bool, ads.Reason, error) {

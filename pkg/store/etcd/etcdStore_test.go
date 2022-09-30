@@ -26,9 +26,8 @@ func testMain(m *testing.M) int {
 	defer CleanEmbeddedEtcd(etcd, etcdDir)
 	if err != nil {
 		log.Fatal("Fail to start embed etcd")
-		os.Exit(1)
 	}
-
+	//var err error
 	storeConfig, err = cfg.ReadStoreConfig("./etcdStoreConfig.json")
 	if err != nil {
 		log.Fatal("fail to read config file", err)

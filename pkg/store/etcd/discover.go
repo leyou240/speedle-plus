@@ -6,16 +6,14 @@ package etcd
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/teramoby/speedle-plus/api/ads"
 	"github.com/teramoby/speedle-plus/api/pms"
 	"github.com/teramoby/speedle-plus/pkg/errors"
 	"github.com/teramoby/speedle-plus/pkg/store"
+	clientv3 "go.etcd.io/etcd/client/v3"
 	"golang.org/x/net/context"
-
-	"time"
-
-	"github.com/coreos/etcd/clientv3"
 )
 
 const (
@@ -172,9 +170,9 @@ func (s *Store) ResetDiscoverRequests(serviceName string) error {
 	return nil
 }
 
-//This method is implemented as common method at evaluator part
-func (d *Store) GeneratePolicies(serviceName, principalType, principalName, principalIDD string) (map[string]*pms.Service, int64, error) {
-	requests, revision, err := d.GetDiscoverRequests(serviceName)
+// This method is implemented as common method at evaluator part
+func (s *Store) GeneratePolicies(serviceName, principalType, principalName, principalIDD string) (map[string]*pms.Service, int64, error) {
+	requests, revision, err := s.GetDiscoverRequests(serviceName)
 	if err != nil {
 		return nil, -1, err
 	}

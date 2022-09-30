@@ -5,17 +5,16 @@ package etcd
 
 import (
 	"fmt"
+	"go.etcd.io/etcd/client/pkg/v3/transport"
+	clientv3 "go.etcd.io/etcd/client/v3"
 	"strconv"
 	"strings"
 
-	"github.com/coreos/etcd/clientv3"
-	"github.com/coreos/etcd/pkg/transport"
-	"github.com/teramoby/speedle-plus/pkg/errors"
 	log "github.com/sirupsen/logrus"
-
-	"github.com/teramoby/speedle-plus/api/pms"
-	"github.com/teramoby/speedle-plus/pkg/store"
 	"github.com/spf13/pflag"
+	"github.com/teramoby/speedle-plus/api/pms"
+	"github.com/teramoby/speedle-plus/pkg/errors"
+	"github.com/teramoby/speedle-plus/pkg/store"
 )
 
 const (

@@ -9,13 +9,12 @@ import (
 	"os"
 	"testing"
 
+	log "github.com/sirupsen/logrus"
+	"github.com/teramoby/speedle-plus/api/pms"
 	"github.com/teramoby/speedle-plus/pkg/cfg"
 	"github.com/teramoby/speedle-plus/pkg/store"
 	_ "github.com/teramoby/speedle-plus/pkg/store/etcd"
 	_ "github.com/teramoby/speedle-plus/pkg/store/file"
-
-	"github.com/teramoby/speedle-plus/api/pms"
-	log "github.com/sirupsen/logrus"
 )
 
 func WriteToTempFile(content []byte) (string, error) {
@@ -86,8 +85,8 @@ func preparePolicyDataInStore(data []byte, t *testing.T) error {
 	return nil
 }
 
-//This method can help to print service, policy or rolepolicy instance. When debugger cannot work, you can use it to
-//print data to help investigation.
+// This method can help to print service, policy or rolepolicy instance. When debugger cannot work, you can use it to
+// print data to help investigation.
 func printObject(p interface{}) {
 	b, e := json.MarshalIndent(p, "", "	")
 	if e != nil {
