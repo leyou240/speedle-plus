@@ -45,7 +45,6 @@ speedleUnitTests:
 	go test ${TEST_OPTS} ./pkg/eval
 	go test ${TEST_OPTS} ./pkg/store/file
 	go test ${TEST_OPTS} ./pkg/store/etcd
-	go test ${TEST_OPTS} ./pkg/store/mongodb
 	go test ${TEST_OPTS} ./pkg/pdl
 	go test ${TEST_OPTS} ./pkg/suid
 	go test ${TEST_OPTS} ./pkg/assertion
@@ -57,27 +56,22 @@ speedleUnitTests:
 testSpeedleRest:
 	pkg/svcs/pmsrest/run_file_test.sh
 	pkg/svcs/pmsrest/run_etcd_test.sh
-	pkg/svcs/pmsrest/run_mongodb_test.sh
 
 testSpeedleGRpc:
 	pkg/svcs/pmsgrpc/run_file_test.sh
 	pkg/svcs/pmsgrpc/run_etcd_test.sh
-	pkg/svcs/pmsgrpc/run_mongodb_test.sh
 
 testSpeedleRestADSCheck:
 	pkg/svcs/adsrest/run_file_test.sh
 	pkg/svcs/adsrest/run_etcd_test.sh
-	pkg/svcs/adsrest/run_mongodb_test.sh
 
 testSpeedleGRpcADSCheck:
 	pkg/svcs/adsgrpc/run_file_test.sh
 	pkg/svcs/adsgrpc/run_etcd_test.sh
-	pkg/svcs/adsgrpc/run_mongodb_test.sh
 
 testSpctl:
 	cmd/spctl/command/run_file_test.sh
 	cmd/spctl/command/run_etcd_test.sh
-	cmd/spctl/command/run_mongodb_test.sh
 
 testSpeedleTls:
 	pkg/svcs/pmsrest/tls_test.sh
