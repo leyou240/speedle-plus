@@ -1,6 +1,3 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package flags
 
 import (
@@ -9,19 +6,16 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 
+	"github.com/gorilla/handlers"
 	"github.com/leyou240/speedle-plus/pkg/assertion"
 	"github.com/leyou240/speedle-plus/pkg/cfg"
 	"github.com/leyou240/speedle-plus/pkg/errors"
 	"github.com/leyou240/speedle-plus/pkg/logging"
-
-	"strconv"
-
 	"github.com/natefinch/lumberjack"
 	"github.com/spf13/pflag"
-
-	"github.com/gorilla/handlers"
 )
 
 // Parameters is the parameters for Speedle

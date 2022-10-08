@@ -1,6 +1,3 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package etcd
 
 import (
@@ -15,7 +12,6 @@ import (
 	log "github.com/sirupsen/logrus"
 	clientv3 "go.etcd.io/etcd/client/v3"
 	"go.etcd.io/etcd/client/v3/concurrency"
-	"go.etcd.io/etcd/server/v3/embed"
 	"golang.org/x/net/context"
 )
 
@@ -31,19 +27,15 @@ const (
 )
 
 type Store struct {
-	client       *clientv3.Client
-	Config       *clientv3.Config
-	KeyPrefix    string
-	stop         chan struct{}
-	embeddedInst *embed.Etcd
-	embeddedDir  string
+	client    *clientv3.Client
+	Config    *clientv3.Config
+	KeyPrefix string
+	stop      chan struct{}
 }
 
 func (s *Store) destroy() error {
 	err := s.client.Close()
-	if s.embeddedInst != nil {
-		CleanEmbeddedEtcd(s.embeddedInst, s.embeddedDir)
-	}
+
 	if err != nil {
 		return errors.New(errors.StoreError, "unable to close connection to etcd server")
 	}
@@ -342,7 +334,7 @@ func (s *Store) CreateService(service *pms.Service) error {
 	}
 	//currently etcd transaction only support up to 128 operations in one transaction.
 	//https://github.com/coreos/etcd/issues/7826, it seems the MaxOpsPerTxn is configurable in later release.
-	maxOps := int(embed.DefaultMaxTxnOps)
+	maxOps := 128
 	startIndex := 0
 	var endIndex int
 	fail := false
@@ -583,8 +575,8 @@ func watch(evalChan chan pms.StoreChangeEvent, s *Store, errChan chan error, sto
 		return
 	}
 	defer func() {
-		cli.Close()
-		log.Infof("Exiting watch %v...", watchID)
+		err := cli.Close()
+		log.Infof("Exiting watch %v,err: %+v", watchID, err)
 	}()
 
 	// Session represents a lease kept alive for the lifetime of a client. Fault-tolerant applications may use sessions to reason about liveness.

@@ -1,6 +1,3 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package etcd
 
 import (
@@ -13,6 +10,7 @@ import (
 	"github.com/leyou240/speedle-plus/api/pms"
 	"github.com/leyou240/speedle-plus/pkg/cfg"
 	"github.com/leyou240/speedle-plus/pkg/store"
+	"github.com/stretchr/testify/assert"
 )
 
 var storeConfig *cfg.StoreConfig
@@ -22,12 +20,7 @@ func TestMain(m *testing.M) {
 }
 
 func testMain(m *testing.M) int {
-	etcd, etcdDir, err := StartEmbeddedEtcd("")
-	defer CleanEmbeddedEtcd(etcd, etcdDir)
-	if err != nil {
-		log.Fatal("Fail to start embed etcd")
-	}
-	//var err error
+	var err error
 	storeConfig, err = cfg.ReadStoreConfig("./etcdStoreConfig.json")
 	if err != nil {
 		log.Fatal("fail to read config file", err)
@@ -40,7 +33,9 @@ func TestWriteReadPolicyStore(t *testing.T) {
 	if err != nil {
 		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer etcdStore.(*Store).destroy()
+	defer func(store *Store) {
+		_ = store.destroy()
+	}(etcdStore.(*Store))
 
 	if psOrigin, err := etcdStore.ReadPolicyStore(); err != nil {
 		t.Fatal("fail to read etcd3 etcdStore:", err)
@@ -75,7 +70,9 @@ func TestWriteReadDeleteService(t *testing.T) {
 	if err != nil {
 		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer etcdStore.(*Store).destroy()
+	defer func(store *Store) {
+		_ = store.destroy()
+	}(etcdStore.(*Store))
 	//clean the service firstly
 	err = etcdStore.DeleteService("service1")
 	t.Log("deleteing service1, err:", err)
@@ -157,7 +154,9 @@ func TestEtcdStore_GetPolicyByName(t *testing.T) {
 	if err != nil {
 		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer etcdStore.(*Store).destroy()
+	defer func(store *Store) {
+		_ = store.destroy()
+	}(etcdStore.(*Store))
 	//clean the service firstly
 	serviceName := "service1"
 	err = etcdStore.DeleteService(serviceName)
@@ -296,7 +295,9 @@ func TestEtcdStore_GetRolePolicyByName(t *testing.T) {
 	if err != nil {
 		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer etcdStore.(*Store).destroy()
+	defer func(store *Store) {
+		_ = store.destroy()
+	}(etcdStore.(*Store))
 	//clean the service firstly
 	serviceName := "service1"
 	err = etcdStore.DeleteService(serviceName)
@@ -421,9 +422,12 @@ func TestManagePolicies(t *testing.T) {
 	if err != nil {
 		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer etcdStore.(*Store).destroy()
+	defer func(store *Store) {
+		_ = store.destroy()
+	}(etcdStore.(*Store))
 	//clean the service firstly
-	etcdStore.DeleteService("service1")
+	err = etcdStore.DeleteService("service1")
+	assert.NoError(t, err)
 	app := pms.Service{Name: "service1", Type: pms.TypeApplication}
 	err = etcdStore.CreateService(&app)
 	if err != nil {
@@ -480,10 +484,13 @@ func TestManageRolePolicies(t *testing.T) {
 	if err != nil {
 		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer etcdStore.(*Store).destroy()
+	defer func(store *Store) {
+		_ = store.destroy()
+	}(etcdStore.(*Store))
 
 	//clean the service firstly
-	etcdStore.DeleteService("service1")
+	err = etcdStore.DeleteService("service1")
+	assert.NoError(t, err)
 	app := pms.Service{Name: "service1", Type: pms.TypeApplication}
 	err = etcdStore.CreateService(&app)
 	if err != nil {
@@ -536,11 +543,13 @@ func TestCheckItemsCount(t *testing.T) {
 	if err != nil {
 		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
-	defer etcdStore.(*Store).destroy()
+	defer func(store *Store) {
+		_ = store.destroy()
+	}(etcdStore.(*Store))
 
 	// clean the services
-	etcdStore.DeleteServices()
-
+	err = etcdStore.DeleteServices()
+	assert.NoError(t, err)
 	// Create service1
 	app1 := pms.Service{Name: "service1", Type: pms.TypeApplication}
 	err = etcdStore.CreateService(&app1)
@@ -664,7 +673,9 @@ func TestCheckItemsCount(t *testing.T) {
 func TestWatch(t *testing.T) {
 	etcdStore, err := store.NewStore(storeConfig.StoreType, storeConfig.StoreProps)
 	defer etcdStore.StopWatch()
-	defer etcdStore.(*Store).destroy()
+	defer func(store *Store) {
+		_ = store.destroy()
+	}(etcdStore.(*Store))
 	if err != nil {
 		t.Fatal("fail to new etcd3 etcdStore:", err)
 	}
@@ -698,7 +709,8 @@ func TestWatch(t *testing.T) {
 	}
 
 	//delete app
-	etcdStore.DeleteService("app1_new")
+	err = etcdStore.DeleteService("app1_new")
+	assert.NoError(t, err)
 	select {
 	case <-time.After(5 * time.Second):
 		t.Errorf("fail to receive policy update event")

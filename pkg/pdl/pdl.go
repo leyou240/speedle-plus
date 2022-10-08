@@ -1,6 +1,3 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package pdl
 
 import (
@@ -98,7 +95,7 @@ func toJSON(i interface{}) io.Reader {
 	buf := &bytes.Buffer{}
 	encoder := json.NewEncoder(buf)
 	encoder.SetEscapeHTML(false)
-	encoder.Encode(i)
+	_ = encoder.Encode(i)
 	return buf
 }
 

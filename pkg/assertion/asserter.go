@@ -1,6 +1,3 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package assertion
 
 import (
@@ -159,7 +156,9 @@ func (a *WebHookAsserter) AssertToken(token string, idpType string, allowedIDD s
 		log.Errorf("Do error: %v", errResp)
 		return nil, errResp
 	}
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(resp.Body)
 
 	if resp.StatusCode != http.StatusOK {
 		log.Errorf("assertion error, status code: %d", resp.StatusCode)

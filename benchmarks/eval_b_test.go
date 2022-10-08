@@ -1,6 +1,3 @@
-//Copyright (c) 2019, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package benchmarks
 
 import (
@@ -19,7 +16,9 @@ func BenchmarkOne(b *testing.B) {
 	if err != nil {
 		b.Fatalf("unable to write to policy file because of error %s", err)
 	}
-	defer os.Remove(filePath)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(filePath)
 
 	rc := ads.RequestContext{
 		Subject: &ads.Subject{
@@ -43,7 +42,9 @@ func BenchmarkTiny(b *testing.B) {
 	if err != nil {
 		b.Fatalf("unable to write to policy file because of error %s", err)
 	}
-	defer os.Remove(filePath)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(filePath)
 
 	rc := ads.RequestContext{
 		Subject: &ads.Subject{
@@ -67,7 +68,9 @@ func BenchmarkSmall(b *testing.B) {
 	if err != nil {
 		b.Fatalf("unable to write to policy file because of error %s", err)
 	}
-	defer os.Remove(filePath)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(filePath)
 
 	rc := ads.RequestContext{
 		Subject: &ads.Subject{
@@ -91,7 +94,9 @@ func BenchmarkMedium(b *testing.B) {
 	if err != nil {
 		b.Fatalf("unable to write to policy file because of error %s", err)
 	}
-	defer os.Remove(filePath)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(filePath)
 
 	rc := ads.RequestContext{
 		Subject: &ads.Subject{
@@ -115,7 +120,9 @@ func BenchmarkLarge(b *testing.B) {
 	if err != nil {
 		b.Fatalf("unable to write to policy file because of error %s", err)
 	}
-	defer os.Remove(filePath)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(filePath)
 
 	rc := ads.RequestContext{
 		Subject: &ads.Subject{
@@ -139,7 +146,9 @@ func BenchmarkHuge(b *testing.B) {
 	if err != nil {
 		b.Fatalf("unable to write to policy file because of error %s", err)
 	}
-	defer os.Remove(filePath)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(filePath)
 
 	rc := ads.RequestContext{
 		Subject: &ads.Subject{
@@ -166,7 +175,9 @@ func BenchmarkLargeExp(b *testing.B) {
 	if err != nil {
 		b.Fatalf("unable to write to policy file because of error %s", err)
 	}
-	defer os.Remove(filePath)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(filePath)
 
 	rc := ads.RequestContext{
 		Subject: &ads.Subject{
@@ -193,7 +204,9 @@ func BenchmarkLargeCond(b *testing.B) {
 	if err != nil {
 		b.Fatalf("unable to write to policy file because of error %s", err)
 	}
-	defer os.Remove(filePath)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(filePath)
 
 	rc := ads.RequestContext{
 		Subject: &ads.Subject{
@@ -229,7 +242,9 @@ func BenchmarkLargePerms(b *testing.B) {
 	if err != nil {
 		b.Fatalf("unable to write to policy file because of error %s", err)
 	}
-	defer os.Remove(filePath)
+	defer func(name string) {
+		_ = os.Remove(name)
+	}(filePath)
 
 	ev, err := eval.NewFromFile(filePath, false)
 	if err != nil {
@@ -285,7 +300,9 @@ func writePolicyFile(fname string, pc, uc int, pw func(w io.Writer, pno int) err
 	if err != nil {
 		return "", err
 	}
-	defer pf.Close()
+	defer func(pf *os.File) {
+		_ = pf.Close()
+	}(pf)
 
 	if _, err := fmt.Fprintln(pf, "[service.bench]"); err != nil {
 		return "", err

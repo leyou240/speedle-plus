@@ -1,6 +1,3 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package etcd
 
 import (
@@ -52,7 +49,9 @@ func (s *Store) PutRequest(request *ads.RequestContext) (int64, error) {
 				for _, kv := range txnResp.Responses[2].GetResponseRange().Kvs {
 					keys = append(keys, string(kv.Key))
 				}
-				go s.DeleteRequests(keys)
+				go func() {
+					_ = s.DeleteRequests(keys)
+				}()
 			}
 			return count, nil
 		}
@@ -170,7 +169,7 @@ func (s *Store) ResetDiscoverRequests(serviceName string) error {
 	return nil
 }
 
-// This method is implemented as common method at evaluator part
+// GeneratePolicies This method is implemented as common method at evaluator part
 func (s *Store) GeneratePolicies(serviceName, principalType, principalName, principalIDD string) (map[string]*pms.Service, int64, error) {
 	requests, revision, err := s.GetDiscoverRequests(serviceName)
 	if err != nil {

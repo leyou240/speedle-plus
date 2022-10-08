@@ -6,25 +6,36 @@ jobs:
   build-test:
     runs-on: ubuntu-latest
     name: build-test
+    strategy:
+      matrix:
+        go: [1.19]
+    services:
+      etcd:
+        image: gcr.io/etcd-development/etcd:v3.5.0
+        ports:
+          - 2379:2379
+        env:
+          ETCD_LISTEN_CLIENT_URLS: http://0.0.0.0:2379
+          ETCD_ADVERTISE_CLIENT_URLS: http://0.0.0.0:2379
     steps:
-    # resolve https://github.com/actions/virtual-environments/issues/798
-    - name: bypass ubuntu DNS issue
-      run: |
-       sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
-    - uses: actions/checkout@v2
-      name: Checkout code
-      with:
-        path: src/github.com/leyou240/speedle-plus
-    - uses: actions/setup-go@v2
-      name: Setup Golang env
-      with:
-        go-version: 1.19.x
-    - name: Build and test
-      working-directory: src/github.com/leyou240/speedle-plus
-      run: |
-        export GOPATH=${GITHUB_WORKSPACE}
-        make build
-        echo ${GITHUB_ACTOR}_${GITHUB_RUN_ID}
-        make speedleUnitTests
+      # resolve https://github.com/actions/virtual-environments/issues/798
+      - name: bypass ubuntu DNS issue
+        run: |
+          sudo ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
+      - uses: actions/checkout@v3
+        name: Checkout code
+        with:
+          path: src/github.com/leyou240/speedle-plus
+      - uses: actions/setup-go@v3
+        name: Setup Golang env
+        with:
+          go-version: ${{ matrix.go }}
+      - name: Build and test
+        working-directory: src/github.com/leyou240/speedle-plus
+        run: |
+          export GOPATH=${GITHUB_WORKSPACE}
+          make build
+          echo ${GITHUB_ACTOR}_${GITHUB_RUN_ID}
+          make speedleUnitTests
         
 

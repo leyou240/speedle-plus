@@ -1,12 +1,7 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package etcd
 
 import (
 	"fmt"
-	"go.etcd.io/etcd/client/pkg/v3/transport"
-	clientv3 "go.etcd.io/etcd/client/v3"
 	"strconv"
 	"strings"
 
@@ -15,14 +10,14 @@ import (
 	"github.com/leyou240/speedle-plus/pkg/store"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/pflag"
+	"go.etcd.io/etcd/client/pkg/v3/transport"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 const (
 	StoreType = "etcd"
 
 	//Following are keys of etcd store properties
-	IsEmbeddedEtcdKey             = "IsEmbeddedEtcd"
-	EmbeddedEtcdDataDirKey        = "EmbeddedEtcdDataDir"
 	EtcdEndpointKey               = "EtcdEndpoint"
 	EtcdKeyPrefixKey              = "EtcdKeyPrefix"
 	EtcdTLSClientCertFileKey      = "EtcdTLSCertFile"
@@ -60,78 +55,56 @@ func (esb Etcd3StoreBuilder) NewStore(config map[string]interface{}) (pms.Policy
 		keyPrefix = DefaultKeyPrefix
 	}
 
-	var isEmbeddedEtcd = false
-	if val, ok := config[IsEmbeddedEtcdKey]; ok {
-		var err error
-		isEmbeddedEtcd, err = convertValueToBool(val, IsEmbeddedEtcdKey)
-		if err != nil {
-			return nil, err
-		}
-	}
-
 	etcdStore := Store{}
 	var etcd3ClientConf clientv3.Config
-	if isEmbeddedEtcd {
-		etcdEndpoint := "localhost:2379"
-		embeddedEtcdDataDir, _ := config[EmbeddedEtcdDataDirKey].(string)
-		fmt.Printf("new embedded Etcd etcdStore: embeddedEtcdDataDir = %q, etcdEndpoint = %q, keyPrefix = %q\n", embeddedEtcdDataDir, etcdEndpoint, keyPrefix)
-		embeddedInst, embeddedDir, err := StartEmbeddedEtcd(embeddedEtcdDataDir)
-		if err != nil {
-			return nil, err
+	etcdEndpoint, ok := config[EtcdEndpointKey].(string)
+	if !ok {
+		return nil, errors.New(errors.ConfigError, "configure item EtcdEndpoint is not found")
+	}
+	log.Debugf("new Etcd etcdStore: etcdEndpoint = %q, keyPrefix = %q\n", etcdEndpoint, keyPrefix)
+	etcd3ClientConf.Endpoints = []string{etcdEndpoint}
+	if strings.HasPrefix(etcdEndpoint, "https") {
+		tlsInfo := transport.TLSInfo{}
+
+		if certFile, ok := config[EtcdTLSClientCertFileKey].(string); ok {
+			tlsInfo.CertFile = certFile
 		}
-		etcdStore.embeddedDir = embeddedDir
-		etcdStore.embeddedInst = embeddedInst
-		etcd3ClientConf.Endpoints = []string{etcdEndpoint}
-	} else {
-		etcdEndpoint, ok := config[EtcdEndpointKey].(string)
-		if !ok {
-			return nil, errors.New(errors.ConfigError, "configure item EtcdEndpoint is not found")
+
+		if keyFile, ok := config[EtcdTLSClientKeyFileKey].(string); ok {
+			tlsInfo.KeyFile = keyFile
 		}
-		log.Debugf("new Etcd etcdStore: etcdEndpoint = %q, keyPrefix = %q\n", etcdEndpoint, keyPrefix)
-		etcd3ClientConf.Endpoints = []string{etcdEndpoint}
-		if strings.HasPrefix(etcdEndpoint, "https") {
-			tlsInfo := transport.TLSInfo{}
 
-			if certFile, ok := config[EtcdTLSClientCertFileKey].(string); ok {
-				tlsInfo.CertFile = certFile
-			}
+		if trustedCAFile, ok := config[EtcdTLSClientTrustedCAFileKey].(string); ok {
+			tlsInfo.TrustedCAFile = trustedCAFile
+		}
 
-			if keyFile, ok := config[EtcdTLSClientKeyFileKey].(string); ok {
-				tlsInfo.KeyFile = keyFile
-			}
+		if cRLFile, ok := config[EtcdTLSCRLFileKey].(string); ok {
+			tlsInfo.CRLFile = cRLFile
+		}
 
-			if trustedCAFile, ok := config[EtcdTLSClientTrustedCAFileKey].(string); ok {
-				tlsInfo.TrustedCAFile = trustedCAFile
-			}
-
-			if cRLFile, ok := config[EtcdTLSCRLFileKey].(string); ok {
-				tlsInfo.CRLFile = cRLFile
-			}
-
-			if val, ok := config[EtcdTLSInsecureSkipVerifyKey]; ok {
-				var err error
-				tlsInfo.InsecureSkipVerify, err = convertValueToBool(val, EtcdTLSInsecureSkipVerifyKey)
-				if err != nil {
-					return nil, err
-				}
-			}
-
-			if serverName, ok := config[EtcdTLSServerNameKey].(string); ok {
-				tlsInfo.ServerName = serverName
-			}
-
-			if allowedCN, ok := config[EtcdTLSAllowedCNKey].(string); ok {
-				tlsInfo.AllowedCN = allowedCN
-			}
-
-			tlsConfig, err := tlsInfo.ClientConfig()
+		if val, ok := config[EtcdTLSInsecureSkipVerifyKey]; ok {
+			var err error
+			tlsInfo.InsecureSkipVerify, err = convertValueToBool(val, EtcdTLSInsecureSkipVerifyKey)
 			if err != nil {
 				return nil, err
 			}
-
-			fmt.Printf("tlsInfo: %v\n", tlsInfo)
-			etcd3ClientConf.TLS = tlsConfig
 		}
+
+		if serverName, ok := config[EtcdTLSServerNameKey].(string); ok {
+			tlsInfo.ServerName = serverName
+		}
+
+		if allowedCN, ok := config[EtcdTLSAllowedCNKey].(string); ok {
+			tlsInfo.AllowedCN = allowedCN
+		}
+
+		tlsConfig, err := tlsInfo.ClientConfig()
+		if err != nil {
+			return nil, err
+		}
+
+		fmt.Printf("tlsInfo: %v\n", tlsInfo)
+		etcd3ClientConf.TLS = tlsConfig
 	}
 	cli, err := clientv3.New(etcd3ClientConf)
 	if err != nil {
@@ -162,9 +135,6 @@ func convertValueToBool(val interface{}, keyName string) (bool, error) {
 
 func (esb Etcd3StoreBuilder) GetStoreParams() map[string]string {
 	return map[string]string{
-
-		IsEmbeddedEtcdFlagName:             IsEmbeddedEtcdKey,
-		EmbeddedEtcdDataDirFlagName:        EmbeddedEtcdDataDirKey,
 		EtcdEndpointFlagName:               EtcdEndpointKey,
 		EtcdKeyPrefixFlagName:              EtcdKeyPrefixKey,
 		EtcdTLSClientCertFileFlagName:      EtcdTLSClientCertFileKey,

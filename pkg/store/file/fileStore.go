@@ -89,10 +89,8 @@ func (s *Store) writePolicyStoreWithoutLock(ps *pms.PolicyStore) error {
 
 // ListAllServices lists all the services
 func (s *Store) ListAllServices() ([]*pms.Service, error) {
-
 	s.rwLock.RLock()
 	defer s.rwLock.RUnlock()
-
 	return s.getServicesWithoutLock()
 }
 
@@ -287,8 +285,7 @@ func (s *Store) DeleteService(serviceName string) error {
 	if !found {
 		return errors.Errorf(errors.EntityNotFound, "service %q is not found", serviceName)
 	}
-	s.writePolicyStoreWithoutLock(ps)
-	return nil
+	return s.writePolicyStoreWithoutLock(ps)
 
 }
 
@@ -327,7 +324,7 @@ func (s *Store) Watch() (pms.StorageChangeChannel, error) {
 
 	go func() {
 		defer func() {
-			watcher.Close()
+			_ = watcher.Close()
 			close(storeChangeChan)
 			close(s.stop)
 		}()

@@ -1,6 +1,3 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package store
 
 import (
@@ -16,7 +13,10 @@ const (
 	DefaultDeleteNumWhenReachMaxDiscoverRequest = int64(100)
 )
 
-var MaxDiscoverRequestNum, DeleteNumWhenReachMaxDiscoverRequest int64
+var (
+	DeleteNumWhenReachMaxDiscoverRequest int64
+	MaxDiscoverRequestNum                int64
+)
 
 func init() {
 	MaxDiscoverRequestNum = DefaultMaxDiscoverRequestNum
@@ -24,17 +24,17 @@ func init() {
 }
 
 type DiscoverRequestManager interface {
-	//Save discover request
+	// SaveDiscoverRequest Save discover request
 	SaveDiscoverRequest(discoverRequest *ads.RequestContext) error
-	//Get last request log
+	// GetLastDiscoverRequest Get last request log
 	GetLastDiscoverRequest(serviceName string) (*ads.RequestContext, int64, error)
-	//Get request logs since a revision.
+	// GetDiscoverRequestsSinceRevision Get request logs since a revision.
 	GetDiscoverRequestsSinceRevision(serviceName string, revision int64) ([]*ads.RequestContext, int64, error)
-	//Get request logs for a service. Get all requests when serviceName is empty.
+	// GetDiscoverRequests Get request logs for a service. Get all requests when serviceName is empty.
 	GetDiscoverRequests(serviceName string) ([]*ads.RequestContext, int64, error)
-	//Clean request logs for a service. Clean all request logs when serviceName is empty.
+	// ResetDiscoverRequests Clean request logs for a service. Clean all request logs when serviceName is empty.
 	ResetDiscoverRequests(serviceName string) error
-	//Generate policies for principal based on existing request logs. Generate policies for all principals when principalXXX are empty.
+	// GeneratePolicies Generate policies for principal based on existing request logs. Generate policies for all principals when principalXXX are empty.
 	GeneratePolicies(serviceName, principalType, principalName, principalIDD string) (map[string]*pms.Service, int64, error)
 }
 

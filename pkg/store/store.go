@@ -1,6 +1,3 @@
-//Copyright (c) 2018, Oracle and/or its affiliates. All rights reserved.
-//Licensed under the Universal Permissive License (UPL) Version 1.0 as shown at http://oss.oracle.com/licenses/upl.
-
 package store
 
 import (
@@ -55,7 +52,7 @@ func StoreBuilders() []string {
 	return list
 }
 
-// The return map expect param's command line flag name as key, and storeProps key in config file as value
+// GetAllStoreParams The return map expect param's command line flag name as key, and storeProps key in config file as value
 func GetAllStoreParams() map[string]string {
 	storeBuildersMu.RLock()
 	defer storeBuildersMu.RUnlock()
