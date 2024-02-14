@@ -17,7 +17,7 @@ require (
 	go.etcd.io/etcd/client/pkg/v3 v3.5.12
 	go.etcd.io/etcd/client/v3 v3.5.12
 	golang.org/x/net v0.21.0
-	google.golang.org/grpc v1.61.0
+	google.golang.org/grpc v1.61.1
 )
 
 require (
