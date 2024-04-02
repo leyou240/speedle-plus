@@ -16,13 +16,13 @@ all: build
 build: buildPms buildAds buildSpctl
 
 buildPms:
-	go build ${goLDFlags} -o ${gopath}/bin/speedle-pms ./cmd/speedle-pms
+	go mod tidy&&go build ${goLDFlags} -o ${gopath}/bin/speedle-pms ./cmd/speedle-pms
 
 buildAds:
-	go build ${goLDFlags} -o ${gopath}/bin/speedle-ads ./cmd/speedle-ads
+	go mod tidy&&go build ${goLDFlags} -o ${gopath}/bin/speedle-ads ./cmd/speedle-ads
 
 buildSpctl:
-	go build ${goLDFlags} -o ${gopath}/bin/spctl  ./cmd/spctl
+	go mod tidy&&go build ${goLDFlags} -o ${gopath}/bin/spctl  ./cmd/spctl
 
 image: imagePms imageAds
 
