@@ -1,6 +1,6 @@
 module github.com/leyou240/speedle-plus
 
-go 1.19
+go 1.22
 
 require (
 	github.com/armon/go-radix v1.0.0
