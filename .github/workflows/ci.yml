@@ -8,7 +8,7 @@ jobs:
     name: build-test
     strategy:
       matrix:
-        go: [1.23.x,1.22.x]
+        go: [1.23.x,1.24.x]
     services:
       etcd:
         image: gcr.io/etcd-development/etcd:v3.5.0
