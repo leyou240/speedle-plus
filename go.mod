@@ -1,6 +1,8 @@
 module github.com/leyou240/speedle-plus
 
 go 1.23
+toolchain go1.24.1
+
 require (
 	github.com/armon/go-radix v1.0.0
 	github.com/fsnotify/fsnotify v1.8.0
@@ -13,7 +15,7 @@ require (
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/pflag v1.0.6
 	github.com/stretchr/testify v1.10.0
-	go.etcd.io/etcd/client/pkg/v3 v3.5.19
+	go.etcd.io/etcd/client/pkg/v3 v3.5.20
 	go.etcd.io/etcd/client/v3 v3.5.19
 	golang.org/x/net v0.37.0
 	google.golang.org/grpc v1.71.0
